@@ -1,0 +1,24 @@
+{
+
+    "users": [
+        {
+            "id": 1,
+            "userName": "jack",
+            "email": "jack@qq.com",
+            "phoneNum": 1921234,
+            "hc_password": 23525233,
+            "id_fans":[1,2,43],
+            "id_subscribe":[124,43,21]
+        },
+
+        {
+            "id": 2,
+            "userName": "mave",
+            "email": "mave@qq.com",
+            "phoneNum": 188534,
+            "hc_password": 23525233,
+            "id_fans":[1,2,43],
+            "id_subscribe":[124,43,21]
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+.background{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh; /* 视口高度 */
+    width: 100vw; /* 视口宽度 */
+    margin: 0;
+    padding: auto;
+    background-image: url('./imgs/karen.jpeg');
+    background-size: cover; /* 确保背景图像覆盖整个元素 */
+    background-position: center; /* 背景图像居中 */
+    filter: brightness(0.5);
+}

@@ -2,9 +2,9 @@
 
 ##### Basic URL: https://acgforum.com
 
-## Gets:
+# Gets:
 
-###### Get the latest 50 posts.
+###### Get the latest posts.
 
 #### URL: /latest-posts
 
@@ -32,9 +32,9 @@ num:30	//the number of posts you want to query.
 }
 ```
 
-###### Get the most popular 50 posts.
+###### Get the most popular posts.
 
-#### URL: /mostLikedPosts
+#### URL: /most-liked-posts
 
 #### Query parames
 
@@ -82,7 +82,7 @@ num:30	//the number of posts you want to query.
         "content": "September 1st, Trump ...",
         "like":234,
         "commentsNum":54,	
-        "comentsId":[2,42,12]
+        "commentsId":[2,42,12]
     }
 }
 ```
@@ -102,12 +102,55 @@ userId: 2	//the id of user
 
 ```json
 {
-	"id": 2,
-	"Name": "alice",
-	"avatarUrl": "/2dt3ksdf.jpn",
-	"selfIntro": "I am an bishoujo...",
-	"fansNum": 241,
-	"subscribeNum": 23
+  "id": 2,
+  "Name": "Alice",
+  "avatarUrl": "https://example.com/2dt3ksdf.jpg",
+  "selfIntro": "I am a bishoujo...",
+  "fansNum": 241,
+  "subscribeNum": 23
+}
+
+```
+
+
+
+
+
+------
+
+------
+
+------
+
+
+
+# Posts:
+
+###### Put up a post.
+
+#### URL: /put-post
+
+#### Query body
+
+```json
+{
+    "title": "Headline",
+    "content": "content of this post.",
+    "userId": 2
+}
+```
+
+###### Like 
+
+###### Sign up an account.
+
+#### URL: /sign-up
+
+```json
+{
+    "userName": "lily",
+    "email": "lily@qq.com",
+    "password": "my password"
 }
 ```
 
@@ -115,7 +158,7 @@ userId: 2	//the id of user
 
 #### URL: /login
 
-Query params
+#### Query body
 
 ```json
 {
@@ -130,35 +173,6 @@ Query params
 ```json
 {
     "token": true/false
-}
-```
-
-
-
-## Posts:
-
-###### Put up a post.
-
-#### URL: /put-post
-
-#### Query body
-
-```json
-{
-    "title": "Headline",
-    "content": "content of this post."
-}
-```
-
-###### Sign up an account.
-
-#### URL: /sign-up
-
-```json
-{
-    "userName": "lily",
-    "email": "lily@qq.com",
-    "password": "my password"
 }
 ```
 

@@ -2,7 +2,7 @@
 
 ##### Basic URL: https://acgforum.com
 
-# Gets:
+# GETs:
 
 ###### Get the latest posts.
 
@@ -124,7 +124,7 @@ userId: 2	//the id of user
 
 
 
-# Posts:
+# POSTs:
 
 ###### Put up a post.
 
@@ -176,3 +176,18 @@ userId: 2	//the id of user
 }
 ```
 
+
+
+
+
+
+
+------
+
+------
+
+------
+
+## DELETEs
+
+###### Delete a post.

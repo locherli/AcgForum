@@ -1,6 +1,7 @@
-.background{
+.body{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 
     position: fixed;
@@ -15,4 +16,3 @@
     background-position: center; /* 背景图像居中 */
     filter: brightness(0.7);
 }
-

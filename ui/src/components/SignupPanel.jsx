@@ -6,12 +6,10 @@ return <div className='panel'>
 
         <div className="login_form">
             <form action="#"><br />
-                <h1>LOG IN</h1>
+                <h1>SIGN UP</h1>
                 <input id="lie" type="text" placeholder="user name"/><br /><br />
                 <input id="lie" type="password" placeholder="password"/><br /><br />
-                <input  id="button"type="submit" value="log in"/>
-                <p >Have no account yet?</p>
-                <a>click here</a>
+                <input  id="button"type="submit" value="sign up"/>
             </form>
         </div>
     </div>

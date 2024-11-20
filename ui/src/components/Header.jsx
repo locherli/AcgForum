@@ -1,31 +1,25 @@
 import { useEffect, useState } from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
+import { Cookies } from "react-cookie";
 
 function Header() {
 
-
-    const [isLoged, setIsLoged] = useState(false);
+    const cookies = new Cookies();
+    console.log(cookies.get('isLogged'));
+    
+    const [isLoged, setIsLoged] = useState(cookies.get('isLogged'));
     const [responseBody, setResponseBody] = useState(null);
 
     useEffect(() => {
-        // fetch("https://apifoxmock.com/m1/5470794-5146307-default/post")
-        //     .then(Response => Response.json())    //turn response message into json object.
-        //     .then(data => setResponseBody(data))
-        //     .catch(err => console.error);
-
-
-        //test example
-        setResponseBody({
-            "id": 2,
-            "Name": "Alice",
-            "avatarUrl": "src\\imgs\\avatar.png",
-            "selfIntro": "I am a bishoujo...",
-            "fansNum": 241,
-            "subscribeNum": 23
-        });
-
-
+        if (cookies.get('isLogged'))
+            fetch("http://localhost:8080/user-info", {
+                method: "GET",    //It's post actually.
+                // body: { "id": cookies.get('userId') }
+            })
+                .then(Response => Response.json())    //turn response message into json object.
+                .then(data => setResponseBody(data))
+                .catch(err => console.error);
     }, []);     //Only fired once at first render.
 
 

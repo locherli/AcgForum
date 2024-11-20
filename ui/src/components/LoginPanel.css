@@ -27,27 +27,21 @@
     background-color: rgb(0, 0, 0, 0.32);
     border-radius: 5px;
     color: white;
+    
 }
 
-
-
-#lie {
+/* #lie {
     width: 25vw;
     height: 35px;
     text-align: center;
     font-size: 17px;
 }
 
-#lie::placeholder{
-    color: white;
-}
-
-
 #button {
     width: 15vw;
     height: 30px;
     font-size: 17px;
-}
+} */
 
 .login_form a{
     text-decoration: none;

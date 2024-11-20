@@ -17,8 +17,7 @@ num:30	//the number of posts you want to query.
 #### Response body
 
 ```json
-{
-    "posts":[
+	[
     	{
             "id": 1,
             "title": null/"Trump just announced an ...",
@@ -29,7 +28,6 @@ num:30	//the number of posts you want to query.
             ...
         }
     ]
-}
 ```
 
 ###### Get the most popular posts.
@@ -94,7 +92,6 @@ num:30	//the number of posts you want to query.
 #### Query params
 
 ```
-token: true	//means user has loged.
 userId: 2	//the id of user
 ```
 
@@ -172,7 +169,10 @@ userId: 2	//the id of user
 
 ```json
 {
-    "token": true/false
+    "token": true/false,
+    "userName":"mike",
+    "userId":2,
+    "email":"2352@qq.com",
 }
 ```
 

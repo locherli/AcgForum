@@ -26,6 +26,7 @@ create table if not exists ref_self_fans
 create table if not exists post
 (
     id         int primary key          not null auto_increment,
+    authorId   int                      not null references userinfo (id),
     isRoot     boolean     default true not null,
     title      varchar(64) default null,
     date       datetime                 not null,

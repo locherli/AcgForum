@@ -6,22 +6,38 @@ import { Cookies } from "react-cookie";
 function Header() {
 
     const cookies = new Cookies();
-    console.log(cookies.get('isLogged'));
-    
     const [isLoged, setIsLoged] = useState(cookies.get('isLogged'));
+    const [isPending, setIsPending] = useState(true);
     const [responseBody, setResponseBody] = useState(null);
 
     useEffect(() => {
-        if (cookies.get('isLogged'))
-            fetch("http://localhost:8080/user-info", {
-                method: "GET",    //It's post actually.
-                // body: { "id": cookies.get('userId') }
-            })
-                .then(Response => Response.json())    //turn response message into json object.
-                .then(data => setResponseBody(data))
-                .catch(err => console.error);
-    }, []);     //Only fired once at first render.
+        var myHeaders = new Headers();
+        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
+        myHeaders.append("Accept", "*/*");
+        myHeaders.append("Host", "apifoxmock.com");
+        myHeaders.append("Connection", "keep-alive");
 
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        var url = "https://apifoxmock.com/m1/5470794-5146307-default/user/" + cookies.get('userId');
+
+        fetch(url, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                setResponseBody(result);
+                setIsPending(false);
+            })
+            .catch(error => console.log('error', error));
+
+            console.log(responseBody);
+            console.log('url: '+url);
+            
+            
+    }, []);     //Only fired once at first render.
 
     return (
         <div className='Header'>
@@ -39,7 +55,7 @@ function Header() {
             </div>
 
             {/* user avatar */}
-            {isLoged && responseBody ?
+            {isLoged && responseBody && !isPending ?
                 <a className='userName' href="#用户界面">
                     <img className='avatar' src={responseBody.avatarUrl} />
                     <span>{responseBody.Name}</span>

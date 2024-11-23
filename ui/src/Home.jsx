@@ -6,23 +6,11 @@ import './Home.css'
 
 
 function Home() {
-
-  const handleClick = () => {
-    window.location.href('/putpost');
-  };
-
-  useEffect(() => {
-
-
-
-  }, []);
-
-
   return (
     <div className="background">
       <Header></Header>
       <PostList></PostList>
-      <Link href='/putpost' className="link-button">发帖</Link>
+      <Link to='putpost' className="link-button">发帖</Link>
     </div>
   );
 }

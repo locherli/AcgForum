@@ -16,9 +16,9 @@ const LoginPanel = () => {
         console.log("clicked");
 
         const queryBody = {
-            userName: nameOrEmail,
-            email: nameOrEmail,
-            password: password
+            "userName": nameOrEmail,
+            "email": nameOrEmail,
+            "password": password
         };
         var myHeaders = new Headers();
         myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");

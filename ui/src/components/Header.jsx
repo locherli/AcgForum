@@ -56,10 +56,10 @@ function Header() {
 
             {/* user avatar */}
             {isLoged && responseBody && !isPending ?
-                <a className='userName' href="#用户界面">
+                <Link to='myself'>
                     <img className='avatar' src={responseBody.avatarUrl} />
                     <span>{responseBody.Name}</span>
-                </a>
+                </Link>
                 :
                 <Link to='login'>登录</Link>
 

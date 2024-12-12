@@ -4,8 +4,8 @@ use db_forum;
 #实体，记录文件存放的路径
 create table if not exists resource
 (
-    owner int not null, #The owner can be the id of post's picture or id of user's/forum's avatar.
-    url varchar(128) not null
+    owner int          not null, #The owner can be the id of post's picture or id of user's/forum's avatar.
+    url   varchar(128) not null
 );
 
 #实体，包含用户基本信息
@@ -29,7 +29,8 @@ create table if not exists ref_self_fan
 (
     id     int not null references user_info (id),
     id_fan int not null references user_info (id),
-    index (id_fan),index (id)
+    index (id_fan),
+    index (id)
 );
 
 #实体，包含帖子/评论的基本信息
@@ -51,7 +52,8 @@ create table if not exists subPost
 (
     id         int not null references post (id),
     id_subPost int not null references post (id),
-    index (id),index (id_subPost)
+    index (id),
+    index (id_subPost)
 );
 #用以个性化推荐的标签
 create table if not exists tag
@@ -78,46 +80,45 @@ create table if not exists post_tag
     index (id)
 );
 #该用户收藏的帖子
-create table if not exists user_collection(
-    user int not null references user_info(id),
-    post int not null references post(id),
+create table if not exists user_collection
+(
+    user int not null references user_info (id),
+    post int not null references post (id),
     index (user)
 );
 #帖子点赞过的用户
-create table if not exists user_likedPost(
-    user int not null references user_info(id),
-    post int not null references post(id),
+create table if not exists user_likedPost
+(
+    user int not null references user_info (id),
+    post int not null references post (id),
     index (post)
 );
 #论坛的基本信息
-create table if not exists forum(
-    id int not null primary key auto_increment,
-    name varchar(16) not null,
-    introduction TEXT ,
-    owner int references user_info(id)
+create table if not exists forum
+(
+    id           int         not null primary key auto_increment,
+    name         varchar(16) not null,
+    introduction TEXT,
+    owner        int references user_info (id)
 );
 #论坛内包含了哪些帖子
-create table if not exists forum_post(
-    forum int not null references forum(id),
-    post int not null references post(id),
+create table if not exists forum_post
+(
+    forum int not null references forum (id),
+    post  int not null references post (id),
     index (forum)
 );
 #该论坛有哪些人关注了
-create table if not exists forum_member(
-    forum int not null references forum(id),
-    user int not null references user_info(id),
-    index (forum), index (user)
+create table if not exists forum_member
+(
+    forum int not null references forum (id),
+    user  int not null references user_info (id),
+    index (forum),
+    index (user)
 );
 
 
-
-
 #VIEWS
-
-SELECT id, COUNT(id_fan) AS fan_count
-FROM ref_self_fan
-GROUP BY id
-ORDER BY fan_count DESC;
 
 
 create view mostPopular_users as
@@ -137,20 +138,15 @@ select *
 from post
 order by likeNum desc;
 
-#PROCEDURES
-create procedure getPosts(in idx int, in offset int)
-begin
-    select * from latest_posts limit idx, offset;
-end;
+create view mostLiked_post_week as
+select *
+from post
+where date > now() - interval 7 day
+order by likeNum desc;
 
-#calculate the number of fans.
-create procedure calculateFanNum(in userId int, out fanNum int)
-begin
-    select count(*) into fanNum from ref_self_fan where id = userId;
-end;
+create view mostLiked_post_month as
+select *
+from post
+where date > now() - interval 1 month
+order by likeNum desc;
 
-#Get the popular post within a month.
-create procedure getRecentPopularPost(in idx int, in offset int)
-begin
-    select * from latest_posts where date > now() - interval 30 day limit idx, offset;
-end;

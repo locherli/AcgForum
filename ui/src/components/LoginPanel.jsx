@@ -7,34 +7,38 @@ const LoginPanel = () => {
     const cookies = new Cookies();
     const navigate = useNavigate();
 
-    const [nameOrEmail, setNameOrEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = (event) => {
         event.preventDefault(); // 阻止表单的默认提交行为
 
-        console.log("clicked");
-
         const queryBody = {
-            "userName": nameOrEmail,
-            "email": nameOrEmail,
+            "email": email,
             "password": password
         };
-        var myHeaders = new Headers();
-        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Accept", "*/*");
-        myHeaders.append("Host", "apifoxmock.com");
-        myHeaders.append("Connection", "keep-alive");
 
         var requestOptions = {
+            headers:{'Content-Type':'application/json'},
             method: 'POST',
-            headers: myHeaders,
             body: JSON.stringify(queryBody), // 确保发送的是 JSON 字符串
             redirect: 'follow'
         };
 
-        fetch("https://apifoxmock.com/m1/5470794-5146307-default/login", requestOptions)
+        var url='http://121.40.20.237:4433/login';
+
+        //response body belike:
+        // {
+        //     "token":true,
+        //     "id": 2,
+        //     "Name": "Alice",
+        //     "avatarUrl": "https://example.com/avatar.png",
+        //     "selfIntro": "I am a bishoujo...",
+        //     "fansNum": 241,
+        //     "subscribeNum": 23
+        //   }
+
+        fetch(url, requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.token) {
@@ -45,7 +49,6 @@ const LoginPanel = () => {
                     alert("成功登入");
                     navigate('/'); // 登录成功后跳转到首页或其他页面
                 } else {
-                    console.log(data);
                     alert("请重新输入");
                 }
             })
@@ -58,9 +61,9 @@ const LoginPanel = () => {
                 <form onSubmit={handleLogin}>
                     <h2>LOG IN</h2>
                     <input
-                        onChange={(e) => setNameOrEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
-                        value={nameOrEmail}
+                        value={email}
                         type="text"
                         placeholder="username or email"
                     />

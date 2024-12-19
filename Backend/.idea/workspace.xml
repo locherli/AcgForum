@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="52b8882c-cad1-4232-9ae8-a8fb418ae200" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+    <list default="true" id="c372603b-7b8c-4021-923a-02f8fd048a78" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/ReturnFormat/ReturnPost.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/ReturnFormat/ReturnSimplePost.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/ReturnFormat/ReturnUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/ForumMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/UserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/Forum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AcgForum.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../AcgForum.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/RequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/PostMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +30,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/acgForum" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -30,10 +43,9 @@
     </option>
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
   "associatedIndex": 2
 }]]></component>
-  <component name="ProjectId" id="2q3KXQphwZgeeypOcuaXXCuOcJ2" />
+  <component name="ProjectId" id="2qNDAZFcNhLQihUMPiX1AYbT7dW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -42,6 +54,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/WorkSpace/AcgForum/Backend",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "MavenSettings",
     "vue.rearranger.settings.migration": "true"
@@ -58,12 +71,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="52b8882c-cad1-4232-9ae8-a8fb418ae200" name="Changes" comment="" />
-      <created>1733885858484</created>
+      <changelist id="c372603b-7b8c-4021-923a-02f8fd048a78" name="Changes" comment="" />
+      <created>1734493996492</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1733885858484</updated>
-      <workItem from="1733885860257" duration="3000" />
+      <updated>1734493996492</updated>
+      <workItem from="1734493997523" duration="53000" />
     </task>
     <servers />
   </component>

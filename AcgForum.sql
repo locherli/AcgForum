@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS user_info
     email       VARCHAR(32) NOT NULL UNIQUE,
     phoneNum    INT,
     hc_password BIGINT      NOT NULL,
-    gender      CHAR(4),
+    gender      boolean,
     age         INT,
     INDEX (userName),
     INDEX (email),
@@ -39,23 +39,17 @@ create table if not exists post
     id         int primary key          not null auto_increment,
     authorId   int                      not null references user_info (id),
     isRoot     boolean     default true not null,
+    root       int,
     title      varchar(64) default null,
     date       datetime                 not null,
     likeNum    bigint      default 0,
     commentNum bigint      default 0,
     content    text,
+    index (root),
     index (date desc),
     index (likeNum desc)
 );
-#关系，记录哪些帖子是该帖子的评论
-create table if not exists subPost
-(
-    id         int not null references post (id),
-    id_subPost int not null references post (id),
-    index (id),
-    index (id_subPost)
-);
-#用以个性化推荐的标签
+#方便检索的标签
 create table if not exists tag
 (
     id       int         not null primary key auto_increment,
@@ -65,7 +59,7 @@ create table if not exists tag
     index (tag_name)
 );
 
-#用户感兴趣的标签
+#用户的标签
 create table if not exists user_tag
 (
     id  int not null references user_info (id),
@@ -128,25 +122,27 @@ FROM ref_self_fan
 GROUP BY id
 ORDER BY fan_number DESC;
 
-create view Latest_posts as
+create view latest_posts as
 select *
 from post
-order by date;
+where isRoot=true
+order by date desc;
 
 create view mostLiked_posts as
 select *
 from post
+where isRoot=true
 order by likeNum desc;
 
 create view mostLiked_post_week as
 select *
 from post
-where date > now() - interval 7 day
+where date > now() - interval 7 day and isRoot=true
 order by likeNum desc;
 
 create view mostLiked_post_month as
 select *
 from post
-where date > now() - interval 1 month
+where date > now() - interval 1 month and isRoot=true
 order by likeNum desc;
 

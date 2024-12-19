@@ -9,14 +9,15 @@ const SignupPanel = () => {
     const [password, setPassword] = useState('');
     const navigate = new useNavigate();
 
+
     const handleSignup = (event) => {
         event.preventDefault(); //prevent default action after submit the form.
 
         var myHeaders = new Headers();
-        myHeaders.append("User-Agent", "Chrome");
+        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Accept", "*/*");
-        myHeaders.append("Host", "127.0.0.1:4523");
+        myHeaders.append("Host", "121.40.20.237:4433");
         myHeaders.append("Connection", "keep-alive");
 
         var raw = JSON.stringify({
@@ -26,13 +27,13 @@ const SignupPanel = () => {
         });
 
         var requestOptions = {
-            method: 'POST',
             headers: myHeaders,
+            method: 'POST',
             body: raw,
             redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:4523/m1/5470794-5146307-default/signup", requestOptions)
+        fetch("http://121.40.20.237:4433/signup", requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (!result.isLegalEmail)
@@ -63,7 +64,7 @@ const SignupPanel = () => {
 
                 <input type="password" placeholder="password"
                     onChange={(e) => { setPassword(e.target.value) }} /><br /><br />
-                <input id="button" type="submit" value="sign up" />
+                <input id="button" type="submit" value="sign up" onClick={handleSignup} />
             </form>
         </div>
     </div>

@@ -11,32 +11,25 @@ function Header() {
     const [responseBody, setResponseBody] = useState(null);
 
     useEffect(() => {
-        var myHeaders = new Headers();
-        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-        myHeaders.append("Accept", "*/*");
-        myHeaders.append("Host", "apifoxmock.com");
-        myHeaders.append("Connection", "keep-alive");
+        if (isLoged) {
 
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
 
-        var url = "https://apifoxmock.com/m1/5470794-5146307-default/user/" + cookies.get('userId');
+            var url = "http://121.40.20.237:4433/user/" + cookies.get('userId');
 
-        fetch(url, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                setResponseBody(result);
-                setIsPending(false);
-            })
-            .catch(error => console.log('error', error));
+            fetch(url, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    setResponseBody(result);
+                    setIsPending(false);
+                })
+                .catch(error => console.log('error', error));
+        }
 
-            console.log(responseBody);
-            console.log('url: '+url);
-            
-            
+
     }, []);     //Only fired once at first render.
 
     return (

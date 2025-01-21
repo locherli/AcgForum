@@ -13,13 +13,6 @@ const SignupPanel = () => {
     const handleSignup = (event) => {
         event.preventDefault(); //prevent default action after submit the form.
 
-        var myHeaders = new Headers();
-        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Accept", "*/*");
-        myHeaders.append("Host", "121.40.20.237:4433");
-        myHeaders.append("Connection", "keep-alive");
-
         var raw = JSON.stringify({
             "userName": userName,
             "email": email,
@@ -27,18 +20,24 @@ const SignupPanel = () => {
         });
 
         var requestOptions = {
-            headers: myHeaders,
+            headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: raw,
             redirect: 'follow'
         };
 
-        fetch("http://121.40.20.237:4433/signup", requestOptions)
+        //example of response
+        //{
+        //     "isLegalEmail": true,
+        //     "isLegalUserName": true
+        // }
+
+        fetch('http://' + window.basicUrl + '/signup', requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (!result.isLegalEmail)
                     alert('非法的邮箱，请重新输入！');
-                else if (!result.isLegalUsername)
+                else if (!result.isLegalUserName)
                     alert('非法的用户名，请重新输入！');
                 else {
                     alert('注册成功，请登录');

@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c372603b-7b8c-4021-923a-02f8fd048a78" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/ReturnFormat/ReturnPost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/ReturnFormat/ReturnSimplePost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/ReturnFormat/ReturnUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/ForumMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/UserMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/Forum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/acgForum/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+    <list default="true" id="7c868c27-d4b5-40ef-a442-b5bb341e4f77" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../AcgForum.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../AcgForum.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Backend.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/RequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/mappers/PostMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/java/com/example/acgforum/tables/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acgForum/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/acgForum/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/PutPostPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/PutPostPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/UserPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/UserPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/LoginPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/LoginPanel.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/SignupPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/SignupPanel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,36 +28,106 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/acgForum" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="customMavenHome" value="C:\Program Files\apache-maven-3.9.9" />
-        <option name="localRepository" value="C:\Program Files\apache-maven-3.9.9\lib" />
-        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
-        <option name="userSettingsFile" value="C:\Program Files\apache-maven-3.9.9\conf\settings.xml" />
+        <option name="localRepository" value="D:\maven_repository" />
+        <option name="userSettingsFile" value="D:\apache-maven-3.8.8-bin\apache-maven-3.8.8\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
-  <component name="ProjectId" id="2qNDAZFcNhLQihUMPiX1AYbT7dW" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2r4MLF2LC8NpIxSpVq5w8qpIi3R" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/WorkSpace/AcgForum/Backend",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.AcgForumApplicationTests.contextLoads.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AcgForumApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.dubbo-backend-example [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.dubbo-backend-example [package].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AcgForumApplication.executor&quot;: &quot;Run&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/WorkSpace/AcgForum/Backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager" selected="Spring Boot.AcgForumApplication">
+    <configuration name="AcgForumApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="acgForum" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.acgforum.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.acgforum" />
+      <option name="MAIN_CLASS_NAME" value="com.example.acgforum.AcgForumApplicationTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AcgForumApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="acgForum" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.acgforum.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.acgforum" />
+      <option name="MAIN_CLASS_NAME" value="com.example.acgforum.AcgForumApplicationTests" />
+      <option name="METHOD_NAME" value="contextLoads" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Backend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Backend" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AcgForumApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="acgForum" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.acgforum.AcgForumApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AcgForumApplicationTests.contextLoads" />
+        <item itemvalue="JUnit.AcgForumApplicationTests" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,12 +139,27 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c372603b-7b8c-4021-923a-02f8fd048a78" name="Changes" comment="" />
-      <created>1734493996492</created>
+      <changelist id="7c868c27-d4b5-40ef-a442-b5bb341e4f77" name="Changes" comment="" />
+      <created>1735813835204</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1734493996492</updated>
-      <workItem from="1734493997523" duration="53000" />
+      <updated>1735813835204</updated>
+      <workItem from="1735813836260" duration="1301000" />
+      <workItem from="1735822975158" duration="66000" />
+      <workItem from="1735825945578" duration="1056000" />
+      <workItem from="1735874184208" duration="900000" />
+      <workItem from="1737079752474" duration="1476000" />
+      <workItem from="1737081253850" duration="581000" />
+      <workItem from="1737248996248" duration="506000" />
+      <workItem from="1737249850101" duration="1550000" />
+      <workItem from="1737274445183" duration="75000" />
+      <workItem from="1737286458845" duration="3669000" />
+      <workItem from="1737334455497" duration="1608000" />
+      <workItem from="1737342046353" duration="3675000" />
+      <workItem from="1737365931539" duration="3248000" />
+      <workItem from="1737370143538" duration="1000" />
+      <workItem from="1737370211374" duration="567000" />
+      <workItem from="1737417575331" duration="724000" />
     </task>
     <servers />
   </component>

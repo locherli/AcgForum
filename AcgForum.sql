@@ -30,7 +30,8 @@ create table if not exists ref_self_fan
     id     int not null references user_info (id),
     id_fan int not null references user_info (id),
     index (id_fan),
-    index (id)
+    index (id),
+    unique index (id, id_fan)
 );
 
 #实体，包含帖子/评论的基本信息
@@ -41,7 +42,7 @@ create table if not exists post
     isRoot     boolean     default true not null,
     root       int,
     title      varchar(64) default null,
-    date       datetime                 not null,
+    date       date                     not null,
     likeNum    bigint      default 0,
     commentNum bigint      default 0,
     content    text,
@@ -78,14 +79,16 @@ create table if not exists user_collection
 (
     user int not null references user_info (id),
     post int not null references post (id),
-    index (user)
+    index (user),
+    unique index (user, post)
 );
 #帖子点赞过的用户
 create table if not exists user_likedPost
 (
     user int not null references user_info (id),
     post int not null references post (id),
-    index (post)
+    index (post),
+    unique index (user, post)
 );
 #论坛的基本信息
 create table if not exists forum
@@ -125,24 +128,26 @@ ORDER BY fan_number DESC;
 create view latest_posts as
 select *
 from post
-where isRoot=true
+where isRoot = true
 order by date desc;
 
 create view mostLiked_posts as
 select *
 from post
-where isRoot=true
+where isRoot = true
 order by likeNum desc;
 
 create view mostLiked_post_week as
 select *
 from post
-where date > now() - interval 7 day and isRoot=true
+where date > now() - interval 7 day
+  and isRoot = true
 order by likeNum desc;
 
 create view mostLiked_post_month as
 select *
 from post
-where date > now() - interval 1 month and isRoot=true
+where date > now() - interval 1 month
+  and isRoot = true
 order by likeNum desc;
 

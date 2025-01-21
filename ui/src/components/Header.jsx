@@ -18,7 +18,7 @@ function Header() {
                 redirect: 'follow'
             };
 
-            var url = "http://121.40.20.237:4433/user/" + cookies.get('userId');
+            var url = "http://" + window.basicUrl + "/user/" + cookies.get('userId');
 
             fetch(url, requestOptions)
                 .then(response => response.json())
@@ -50,7 +50,8 @@ function Header() {
             {/* user avatar */}
             {isLoged && responseBody && !isPending ?
                 <Link to='myself'>
-                    <img className='avatar' src={responseBody.avatarUrl} />
+                    {/* <img className='avatar' src={responseBody.avatarUrl} /> */}
+                    <img className='avatar' src={'defaultAvatar.png'} />
                     <span>{responseBody.Name}</span>
                 </Link>
                 :

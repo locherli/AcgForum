@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import './PutPostPage.css'
 import { Cookies } from "react-cookie";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export default function PutPostPage() {
@@ -8,22 +9,41 @@ export default function PutPostPage() {
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const navi = useNavigate();
 
     const handleSubmit = () => {
 
-        fetch('http://localhost:8080/put-post', {
+        if (cookies.get('isLogged') === false) {
+            alert('尚未登陆');
+            return;
+        }
+
+        if (content === '') {
+            alert('内容为空！');
+            return;
+        }
+        else if (title === '') {
+            alert('标题为空！');
+            return;
+        }
+
+        fetch('http://' + window.basicUrl + '/put_post', {
+            headers: { 'Content-Type': "application/json" },
             method: 'POST',
-            body: {
+            body: JSON.stringify({
                 "title": title,
                 "content": content,
-                "userId": cookies.get('userId')
-            }
-        }).catch(err => {
-            console.log(err);
+                "userId": cookies.get('userId'),
+                "isRoot": true,
+            })
         })
+            .catch(err => {
+                console.log(err);
+            });
 
 
-
+        alert('成功，返回主页');
+        navi('/');
     }
 
     return <div style={

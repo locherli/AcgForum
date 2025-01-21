@@ -6,7 +6,6 @@ import { Cookies } from 'react-cookie';
 const LoginPanel = () => {
     const cookies = new Cookies();
     const navigate = useNavigate();
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -25,27 +24,30 @@ const LoginPanel = () => {
             redirect: 'follow'
         };
 
-        var url='http://121.40.20.237:4433/login';
+        var url='http://'+window.basicUrl+ '/login';
 
         //response body belike:
         // {
-        //     "token":true,
-        //     "id": 2,
-        //     "Name": "Alice",
-        //     "avatarUrl": "https://example.com/avatar.png",
-        //     "selfIntro": "I am a bishoujo...",
-        //     "fansNum": 241,
-        //     "subscribeNum": 23
-        //   }
-
+        //     "token": true,
+        //     "id": 4,
+        //     "name": "locher",
+        //     "avatarUrl": null,
+        //     "selfIntro": null,
+        //     "fanNum": 0,
+        //     "subscribeNum": 0
+        // }
         fetch(url, requestOptions)
             .then(response => response.json())
             .then(data => {
+
+                console.log(data);
+                
+
                 if (data.token) {
                     // Save data into cookies.
                     cookies.set('isLogged', true, { path: '/' });
-                    cookies.set('userId', data.userId, { path: '/' });
-                    cookies.set('userName', data.userName, { path: '/' });
+                    cookies.set('userId', data.id, { path: '/' });
+                    cookies.set('userName', data.name, { path: '/' });
                     alert("成功登入");
                     navigate('/'); // 登录成功后跳转到首页或其他页面
                 } else {
@@ -65,7 +67,7 @@ const LoginPanel = () => {
                         required
                         value={email}
                         type="text"
-                        placeholder="username or email"
+                        placeholder="email"
                     />
                     <br /><br />
                     <input

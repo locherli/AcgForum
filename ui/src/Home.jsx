@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Header from "./components/Header";
 import PostList from "./components/PostList";
 import { Link } from "react-router-dom";
-import './Home.css'
+import './Home.css';
 
 
 function Home() {

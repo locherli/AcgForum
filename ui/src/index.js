@@ -5,17 +5,29 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 import PutPostPage from './PutPostPage';
+import MyselfPage from './MyselfPage'
+import DetailedPostPage from './DetailedPostPage';
 import UserPage from './UserPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-   <Router>
-      <Routes>
-         <Route exact path='/' element={<Home />} />
-         <Route path='/login' element={<LoginPage />} />
-         <Route path='/signup' element={<SignupPage />} />
-         <Route path='/putpost' element={<PutPostPage />} />
-         <Route path='/myself' element={<UserPage />} />
-      </Routes>
-   </Router>
+   <div style={{
+      margin: '0',
+      padding: '0',
+      width: '100vw', // 使用vw单位确保宽度是视口的100%
+      height: '100vh', // 使用vh单位确保高度是视口的100%
+   }}>
+      <Router>
+         <Routes>
+            <Route exact path='/' element={<Home />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/signup' element={<SignupPage />} />
+            <Route path='/putpost' element={<PutPostPage />} />
+            <Route path='/myself' element={<MyselfPage />} />
+            <Route path='/user' element={<UserPage />} />
+            <Route path='/detailedpost' element={<DetailedPostPage />} />
+         </Routes>
+      </Router>
+   </div>
+
 );

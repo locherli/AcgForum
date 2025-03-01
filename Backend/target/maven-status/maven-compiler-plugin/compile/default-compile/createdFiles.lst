@@ -1,3 +1,4 @@
+com\example\acgforum\ReturnFormat\ReturnForum.class
 com\example\acgforum\mappers\PostMapper.class
 com\example\acgforum\AcgForumApplication.class
 com\example\acgforum\RequestController.class

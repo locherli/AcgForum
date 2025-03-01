@@ -5,38 +5,85 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c868c27-d4b5-40ef-a442-b5bb341e4f77" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/acgForum.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnForum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AcgForum.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../AcgForum.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Backend.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/5ecc8925-57ad-4b07-83ba-20ccaf36064b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/5ecc8925-57ad-4b07-83ba-20ccaf36064b.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/PutPostPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/PutPostPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/acgForum/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/RequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnPost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnSimplePost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnSimplePost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ForumMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ForumMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/PostMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Forum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Forum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/RequestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/RequestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnComment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnComment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnPost.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnPost.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnSimplePost.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnSimplePost.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/ForumMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/ForumMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/UserMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Forum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Forum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Post.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/dubbo-backend-example-0.0.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/dubbo-backend-example-0.0.1.jar.original" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2025-01-21T08-09-39_182.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.acgforum.AcgForumApplicationTests.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.acgforum.AcgForumApplicationTests.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/example/acgforum/AcgForumApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/example/acgforum/AcgForumApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/Home.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/UserPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/UserPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Header.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/LoginPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/LoginPanel.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/SignupPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/SignupPanel.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../../../maven_repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar!/lombok/Data.class" root0="SKIP_INSPECTION" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
+        <option name="customMavenHome" value="D:\apache-maven-3.8.8-bin\apache-maven-3.8.8" />
         <option name="localRepository" value="D:\maven_repository" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
         <option name="userSettingsFile" value="D:\apache-maven-3.8.8-bin\apache-maven-3.8.8\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -57,7 +104,10 @@
     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.AcgForumApplication.executor&quot;: &quot;Run&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/WorkSpace/AcgForum/Backend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -65,6 +115,9 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -123,8 +176,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.AcgForumApplicationTests.contextLoads" />
         <item itemvalue="JUnit.AcgForumApplicationTests" />
+        <item itemvalue="JUnit.AcgForumApplicationTests.contextLoads" />
       </list>
     </recent_temporary>
   </component>
@@ -160,10 +213,49 @@
       <workItem from="1737370143538" duration="1000" />
       <workItem from="1737370211374" duration="567000" />
       <workItem from="1737417575331" duration="724000" />
+      <workItem from="1739948448979" duration="5000" />
+      <workItem from="1739949642718" duration="5000" />
+      <workItem from="1740532664665" duration="14000" />
+      <workItem from="1740578571849" duration="492000" />
+      <workItem from="1740649743832" duration="2141000" />
+      <workItem from="1740654637684" duration="2732000" />
+      <workItem from="1740657395690" duration="5786000" />
+      <workItem from="1740668070707" duration="3005000" />
+      <workItem from="1740728599826" duration="5514000" />
+      <workItem from="1740735146393" duration="7050000" />
+      <workItem from="1740751796504" duration="1157000" />
+      <workItem from="1740753027554" duration="2568000" />
+      <workItem from="1740787898056" duration="3405000" />
+      <workItem from="1740818186647" duration="598000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.sql.SQLException" package="java.sql" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

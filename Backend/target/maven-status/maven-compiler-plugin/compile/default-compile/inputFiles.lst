@@ -4,6 +4,7 @@ D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\PostMap
 D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\UserMapper.java
 D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\RequestController.java
 D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnComment.java
+D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnForum.java
 D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnPost.java
 D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnSimplePost.java
 D:\WorkSpace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnUser.java

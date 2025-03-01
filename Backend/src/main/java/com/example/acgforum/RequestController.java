@@ -1,45 +1,92 @@
 package com.example.acgforum;
 
-import com.example.acgforum.ReturnFormat.ReturnComment;
-import com.example.acgforum.ReturnFormat.ReturnPost;
-import com.example.acgforum.ReturnFormat.ReturnSimplePost;
-import com.example.acgforum.ReturnFormat.ReturnUser;
+import com.example.acgforum.ReturnFormat.*;
+import com.example.acgforum.mappers.ForumMapper;
+import com.example.acgforum.mappers.*;
 import com.example.acgforum.mappers.PostMapper;
 import com.example.acgforum.mappers.UserMapper;
+import com.example.acgforum.tables.Forum;
 import com.example.acgforum.tables.Post;
 import com.example.acgforum.tables.User;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
 
-import java.sql.Array;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
 
 @RestController
 @CrossOrigin(origins = "*")
 public class RequestController {
+    Logger logger = LoggerFactory.getLogger("CONTROLLER'S LOGGER");
+    @Value("${nginx.archiveLocation}")
+    public static String archiveLocation;
     @Resource(name = "postMapper")
     PostMapper postMapper;
     @Resource(name = "userMapper")
     UserMapper userMapper;
+    @Resource(name = "forumMapper")
+    ForumMapper forumMapper;
+    @Autowired
+    private MultipartProperties multipartProperties;
+
+    // 辅助方法：计算帖子中关键字出现的次数
+    public int countKeywordOccurrences(String content, String keyword) {
+        String lowerContent = content.toLowerCase();
+        String lowerKeyword = keyword.toLowerCase();
+        int count = 0;
+        int index = 0;
+        while ((index = lowerContent.indexOf(lowerKeyword, index)) != -1) {
+            count++;
+            index += lowerKeyword.length();
+        }
+        return count;
+    }
+
+    //辅助方法
+    private ArrayList<ReturnSimplePost> getReturnSimplePosts(ArrayList<Post> pl) {
+        ArrayList<ReturnSimplePost> rl = new ArrayList<>();
+        for (var i : pl) {
+            //make sure the response body won't too long.
+            if (i.getTitle() == null) {
+                if (i.getContent().length() > 50)
+                    i.setTitle(i.getContent().substring(0, 50) + "...");
+                else
+                    i.setTitle(i.getContent());
+            }
+
+            rl.add(new ReturnSimplePost(i.getId(),
+                    i.getTitle(), i.getDate(), i.getLikeNum(), i.getCommentNum()));
+        }
+
+        return rl;
+    }
+
 
     @RequestMapping("/post/{id}")
     public ReturnPost post(@PathVariable Integer id) {
         Post p = postMapper.getById(id);
         User author = userMapper.getUserById(p.getAuthorId());
         ArrayList<Integer> arr = postMapper.subPostList(id);
-        ReturnPost rp = new ReturnPost(p.getId(), p.getAuthorId(), author.getUserName()
-                , p.getTitle(), p.getDate(), p.getContent(), p.getLikeNum(), p.getCommentNum(), arr);
 
-        return rp;
+        return new ReturnPost(p.getId(), "success", p.getAuthorId(), author.getUserName(),
+                p.getTitle(), p.getDate(), p.getContent(), p.getLikeNum(), p.getCommentNum(), arr);
     }
 
     @RequestMapping("/most_liked_post")
     public ArrayList<ReturnSimplePost> mostLikedPost(@RequestBody Integer page, @RequestBody String interval) {
-        ArrayList<ReturnSimplePost> Returnlist = new ArrayList<>();
-        ArrayList<Post> postList = new ArrayList<>();
+        ArrayList<Post> postList;
 
         if (interval.equalsIgnoreCase("week"))
             postList = postMapper.weeklyMostLikedPostList(30, (page - 1) * 30);
@@ -48,24 +95,12 @@ public class RequestController {
         else
             postList = postMapper.mostLikedPostList(30, (page - 1) * 30);
 
-        // cast "Post" into "ReturnSimplePost".
-        postList.forEach(i -> {
-            Returnlist
-                    .add(new ReturnSimplePost(i.getId(), i.getTitle(), i.getDate(), i.getLikeNum(), i.getCommentNum()));
-        });
-
-        return Returnlist;
+        return getReturnSimplePosts(postList);
     }
 
     @RequestMapping("/latest_post/{page}")
     public ArrayList<ReturnSimplePost> latestPost(@PathVariable Integer page) {
-        ArrayList<ReturnSimplePost> ReturnList = new ArrayList<>();
-
-        postMapper.latestPostList(30, (page - 1) * 30).forEach(i -> {
-            ReturnList.add(new ReturnSimplePost(i.getId(), i.getTitle(),
-                    i.getDate(), i.getLikeNum(), i.getCommentNum()));
-        });
-        return ReturnList;
+        return getReturnSimplePosts(postMapper.latestPostList(30, (page - 1) * 30));
     }
 
     @RequestMapping(value = "user/{id}")
@@ -84,14 +119,8 @@ public class RequestController {
 
     @RequestMapping("collected_posts")
     public ArrayList<ReturnSimplePost> collectedPosts(@RequestParam Integer page, @RequestParam Integer userId) {
-        ArrayList<ReturnSimplePost> returnList = new ArrayList<>();
         ArrayList<Post> postList = postMapper.collectedPostListByUserIdLimit(userId, 30, (page - 1) * 30);
-
-        postList.forEach(i -> {
-            returnList.add(new ReturnSimplePost(
-                    i.getId(), i.getTitle(), i.getDate(), i.getLikeNum(), i.getCommentNum()));
-        });
-        return returnList;
+        return getReturnSimplePosts(postList);
     }
 
     @RequestMapping("fans/{myId}")
@@ -126,14 +155,17 @@ public class RequestController {
         boolean isRoot = requestBody.get("isRoot").equalsIgnoreCase("true");
         Integer root = null; // Declare the variable here
 
-        if (!isRoot) {
+
+        if (!isRoot) /*if this post was a comment.*/ {
+            //comments number + 1
             root = Integer.parseInt(requestBody.get("root"));
             Post p = postMapper.getById(root);
             p.setCommentNum(p.getCommentNum() + 1);
             postMapper.update(p);
         }
-        Post p = new Post(null, Integer.parseInt(requestBody.get("userId")), isRoot, root, requestBody.get("title"),
-                LocalDateTime.now(), 0, 0, requestBody.get("content"));
+        Post p = new Post(null, Integer.parseInt(requestBody.get("userId")), isRoot, root
+                , requestBody.get("title"), LocalDateTime.now(), 0, 0
+                , requestBody.get("content"), Integer.parseInt(requestBody.get("forumId")));
 
         postMapper.insertPost(p);
     }
@@ -236,7 +268,6 @@ public class RequestController {
         subscribeUsers.forEach(i -> {
             ReturnUsers.add(new ReturnUser(true, i.getId(), i.getUserName(),
                     i.getAvatarUrl(), i.getSelfIntro(), i.getFanNum(), i.getSubscribeNum()));
-            System.out.println(i.toString());
         });
 
         return subscribeUsers;
@@ -244,40 +275,10 @@ public class RequestController {
 
     @GetMapping("/posts_by_author")
     public ArrayList<ReturnSimplePost> getPostsByAuthor(@RequestParam Integer authorId) {
-
         ArrayList<Post> postList = postMapper.getByAuthor(authorId);
-
-        //if is comment.
-        postList.forEach(i -> {
-            if (i.getTitle() == null) {
-                if (i.getContent().length() > 50)
-                    i.setTitle(i.getContent().substring(0, 50) + "...");
-                else
-                    i.setTitle(i.getContent());
-            }
-        });
-
-        ArrayList<ReturnSimplePost> Returnlist = new ArrayList<>();
-        // cast "Post" into "ReturnSimplePost".
-        postList.forEach(i -> {
-            Returnlist.add(new ReturnSimplePost(i.getId(),
-                    i.getTitle(), i.getDate(), i.getLikeNum(), i.getCommentNum()));
-        });
-        return Returnlist;
+        return getReturnSimplePosts(postList);
     }
 
-    // 辅助方法：计算帖子中关键字出现的次数
-    public int countKeywordOccurrences(String content, String keyword) {
-        String lowerContent = content.toLowerCase();
-        String lowerKeyword = keyword.toLowerCase();
-        int count = 0;
-        int index = 0;
-        while ((index = lowerContent.indexOf(lowerKeyword, index)) != -1) {
-            count++;
-            index += lowerKeyword.length();
-        }
-        return count;
-    }
 
     @GetMapping("/search_post")
     public ArrayList<ReturnSimplePost> searchPost(@RequestParam String keyword) {
@@ -289,18 +290,13 @@ public class RequestController {
             return count_b - count_a;
         });
         // cast "Post" into "ReturnSimplePost".
-        ArrayList<ReturnSimplePost> rl = new ArrayList<>();
-        pl.forEach(i -> {
-            rl.add(new ReturnSimplePost(i.getId(),
-                    i.getTitle(), i.getDate(), i.getLikeNum(), i.getCommentNum()));
-        });
-        return rl;
+        return getReturnSimplePosts(pl);
     }
+
 
     @GetMapping("/search_user")
     ArrayList<User> searchUser(@RequestParam String keyword) {
-        ArrayList<User> ul = userMapper.searchUsers(keyword);
-        return ul;
+        return userMapper.searchUsers(keyword);
     }
 
     @RequestMapping("/unsubscribe_user")
@@ -312,4 +308,142 @@ public class RequestController {
     public void uncollect_post(@RequestParam Integer userId, @RequestParam Integer postId) {
         userMapper.deleteCollectedPost(userId, postId);
     }
+
+    @RequestMapping("/forums/{page}")
+    public ArrayList<ReturnForum> forums(@PathVariable Integer page) {
+
+        PageHelper.startPage(page, 30);
+        ArrayList<Forum> forums = forumMapper.list();
+        ArrayList<ReturnForum> returnList = new ArrayList<>();
+        forums.forEach(i -> {
+            ReturnForum f = new ReturnForum();
+            f.setForumId(i.getId());
+            f.setForumName(i.getName());
+            f.setIntroduction(i.getIntroduction());
+            f.setUserNum(i.getUserNum());
+            f.setIcon(i.getIcon());
+            returnList.add(f);
+        });
+        return returnList;
+    }
+
+    @GetMapping("/posts_by_forum")
+    public ArrayList<ReturnSimplePost> postsByForum(Integer forumId, Integer page) {
+        PageHelper.startPage(page, 30);
+        ArrayList<Post> posts = forumMapper.getLatestPostListByForumId(forumId);
+        return getReturnSimplePosts(posts);
+    }
+
+    @PostMapping("/create_forum")
+    public Map<String, Object> createForum(@RequestBody Map<String, String> requestBody) {
+        Forum queryForum = forumMapper.getForumByName(requestBody.get("forumName"));
+        Map<String, Object> rm = new HashMap<>();
+
+        if (queryForum == null) {
+            Forum f = new Forum();
+            f.setName(requestBody.get("forumName"));
+            f.setIntroduction(requestBody.get("introduction"));
+            f.setOwner(Integer.parseInt(requestBody.get("owner")));
+            f.setPostNum(0);
+            f.setUserNum(0);
+            f.setIntroduction("defaultIcon.jpg");
+            forumMapper.insertForum(f);
+
+            rm.put("isOk", true);
+            rm.put("forumId", f.getId());
+            rm.put("msg", "create forum success.");
+        } else {
+            rm.put("isOk", false);
+            rm.put("forumId", null);
+            rm.put("msg", "this forum was already been used.");
+        }
+        return rm;
+    }
+
+    @PostMapping("/change_avatar/{userId}")
+    Map<String, Object> changeAvatar(@PathVariable Integer userId, MultipartFile avatarFile) {
+        //authenticate user
+        if (userMapper.getUserById(userId) == null) {
+            Map<String, Object> rm = new HashMap<>();
+            rm.put("isOk", false);
+            rm.put("message", "Unauthorized");
+            return rm;
+        }
+
+        try /*store the file into nginx server.*/ {
+            int lastDot = avatarFile.getOriginalFilename().lastIndexOf('.');
+            String extname = avatarFile.getOriginalFilename().substring(lastDot);
+
+            String fileName = UUID.randomUUID() + "_" + userId + extname;
+            File fLocation = new File("/www/wwwroot/47.106.126.183_5555/" + fileName);
+
+            if (!fLocation.exists())
+                fLocation.createNewFile();
+
+            avatarFile.transferTo(fLocation);
+            logger.info("FILE PATH: " + fLocation.getAbsolutePath());
+
+            User u = userMapper.getUserById(userId);
+            u.setAvatarUrl(fileName);
+            userMapper.updateUser(u);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            Map<String, Object> rm = new HashMap<>();
+            rm.put("isOk", false);
+            rm.put("message", "Failed to upload avatar");
+            return rm;
+        }
+
+        Map<String, Object> rm = new HashMap();
+        rm.put("isOk", true);
+        return rm;
+    }
+
+
+    @PostMapping("/change_icon/{forumId}")
+    Map<String, Object> changeIcon(@PathVariable Integer forumId, MultipartFile iconFile) {
+        //authenticate user
+        if (forumMapper.getForumById(forumId) == null) {
+            Map<String, Object> rm = new HashMap<>();
+            rm.put("isOk", false);
+            rm.put("message", "forum don't exist.");
+            return rm;
+        }
+
+        try /*store the file into nginx server.*/ {
+            int lastDot = iconFile.getOriginalFilename().lastIndexOf('.');
+            String extname = iconFile.getOriginalFilename().substring(lastDot);
+
+            String fileName = UUID.randomUUID() + extname;
+            File fLocation = new File("/www/wwwroot/47.106.126.183_5555/"+ fileName);
+            logger.info("FILE PATH: " + fLocation.getAbsolutePath());
+
+            if (!fLocation.exists())
+                fLocation.createNewFile();
+
+            iconFile.transferTo(fLocation);
+
+            Forum f = forumMapper.getForumById(forumId);
+            f.setIcon(fileName);
+            forumMapper.updateForum(f);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            Map<String, Object> rm = new HashMap<>();
+            rm.put("isOk", false);
+            rm.put("message", "Failed to upload icon");
+            return rm;
+        }
+
+        Map<String, Object> rm = new HashMap();
+        rm.put("isOk", true);
+        return rm;
+    }
+
+    @GetMapping("/forum/{forumId}")
+    Forum getForumById(@PathVariable Integer id){
+        return forumMapper.getForumById(id);
+    }
+
 }

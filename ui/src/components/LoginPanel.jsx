@@ -25,24 +25,9 @@ const LoginPanel = () => {
         };
 
         var url='http://'+window.basicUrl+ '/login';
-
-        //response body belike:
-        // {
-        //     "token": true,
-        //     "id": 4,
-        //     "name": "locher",
-        //     "avatarUrl": null,
-        //     "selfIntro": null,
-        //     "fanNum": 0,
-        //     "subscribeNum": 0
-        // }
         fetch(url, requestOptions)
             .then(response => response.json())
             .then(data => {
-
-                console.log(data);
-                
-
                 if (data.token) {
                     // Save data into cookies.
                     cookies.set('isLogged', true, { path: '/' });

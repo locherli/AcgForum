@@ -14,30 +14,26 @@ public interface UserMapper {
     @Select("select * from user_info where userName like concat('%',#{keyword},'%')")
     ArrayList<User> searchUsers(String keyword);
 
-    @Select("select *," +
-            "(select url  from resource where owner = #{id}) as avatarUrl " +
+    @Select("select *,avatar as avatarUrl " +
             ",(select count(*) from ref_self_fan where id=#{id}) as fanNum " +
             ",(select count(*) from ref_self_fan where id_fan=#{id}) as subscribeNum" +
             " from user_info where id = #{id}")
     User getUserById(Integer id);
 
-    @Select("select *," +
-            "(select url  from resource where owner = u.id) as avatarUrl " +
+    @Select("select *,avatar as avatarUrl " +
             ",(select count(*) from ref_self_fan where id=u.id) as fanNum " +
             ",(select count(*) from ref_self_fan where id_fan=u.id) as subscribeNum" +
             " from user_info as u where email=#{email}")
     User getUserByEmail(String email);
 
-    @Select("SELECT u.*, " +
-            "(SELECT url FROM resource WHERE owner = u.id) AS avatarUrl, " +
+    @Select("SELECT u.*, u.avatar as avatarUrl, " +
             "(SELECT COUNT(*) FROM ref_self_fan WHERE id = u.id) AS fanNum, " +
             "(SELECT COUNT(*) FROM ref_self_fan WHERE id_fan = u.id) AS subscribeNum " +
             "FROM user_info u " +
             "WHERE u.id IN (SELECT id FROM ref_self_fan WHERE id_fan = #{userId})")
     ArrayList<User> getSubscribedUsers(Integer userId);
 
-    @Select("select u.*," +
-            "(select url  from resource where owner = u.id) as avatarUrl " +
+    @Select("SELECT u.*, u.avatar as avatarUrl " +
             ",(select count(*) from ref_self_fan where id = u.id) as fanNum " +
             ",(select count(*) from ref_self_fan where id_fan = u.id) as subscribeNum " +
             "from user_info u where id in " +
@@ -79,7 +75,7 @@ public interface UserMapper {
     @Delete("delete from user_info where id=#{id}")
     void deleteUserById(Integer id);
 
-    @Update("update user_info set userName=#{userName}, email=#{email}, " +
+    @Update("update user_info set userName=#{userName}, email=#{email}, avatar = #{avatarUrl}, " +
             "phoneNum=#{phoneNum}, hc_password=#{hc_password}, gender=#{gender},age=#{age} where id=#{id}")
     void updateUser(User user);
 

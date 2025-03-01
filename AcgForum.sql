@@ -1,13 +1,6 @@
 create database if not exists db_forum;
 use db_forum;
 
-#实体，记录文件存放的路径
-create table if not exists resource
-(
-    owner int          not null, #The owner can be the id of post's picture or id of user's/forum's avatar.
-    url   varchar(128) not null
-);
-
 #实体，包含用户基本信息
 CREATE TABLE IF NOT EXISTS user_info
 (
@@ -18,6 +11,7 @@ CREATE TABLE IF NOT EXISTS user_info
     hc_password BIGINT      NOT NULL,
     gender      boolean,
     age         INT,
+    avatar      varchar(50) default 'defaultAvatar.jpg',
     INDEX (userName),
     INDEX (email),
     INDEX user_name_hc_password (userName, hc_password),
@@ -46,10 +40,12 @@ create table if not exists post
     likeNum    bigint      default 0,
     commentNum bigint      default 0,
     content    text,
+    forum      int         default null references forum (id),
     index (root),
     index (date desc),
     index (likeNum desc)
 );
+
 #方便检索的标签
 create table if not exists tag
 (
@@ -96,15 +92,12 @@ create table if not exists forum
     id           int         not null primary key auto_increment,
     name         varchar(16) not null,
     introduction TEXT,
-    owner        int references user_info (id)
+    owner        int references user_info (id),
+    postNum      int         default 0,
+    userNum      int         default 0,
+    icon         varchar(50) default 'defaultIcon.jpg'
 );
-#论坛内包含了哪些帖子
-create table if not exists forum_post
-(
-    forum int not null references forum (id),
-    post  int not null references post (id),
-    index (forum)
-);
+
 #该论坛有哪些人关注了
 create table if not exists forum_member
 (

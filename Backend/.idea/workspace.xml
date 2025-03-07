@@ -5,41 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c868c27-d4b5-40ef-a442-b5bb341e4f77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/lombok-1.18.36.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/RequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/PostMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Forum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Forum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Backend-0.0.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/Backend-0.0.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Backend-0.0.1.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/Backend-0.0.1.jar.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/RequestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/RequestController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnComment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnComment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnForum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnForum.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnPost.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnPost.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnSimplePost.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnSimplePost.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/ReturnFormat/ReturnUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/PostMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/PostMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/UserMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Forum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Forum.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Post.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2025-03-01T16-42-07_646.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/defaultAvatar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/DetailedPostPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/DetailedPostPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/Home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/MyselfPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/MyselfPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/PutPostPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/PutPostPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/UserPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/UserPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/ForumPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/ForumPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/PostList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,6 +197,7 @@
       <workItem from="1741227108250" duration="555000" />
       <workItem from="1741256006858" duration="655000" />
       <workItem from="1741269020219" duration="382000" />
+      <workItem from="1741355148983" duration="630000" />
     </task>
     <servers />
   </component>

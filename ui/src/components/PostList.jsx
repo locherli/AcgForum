@@ -39,7 +39,7 @@ export default function LatestPostList() {
             ) : (posts.length === 0 ?
                 <p style={{ color: 'white', display: 'flex', justifyContent: 'space-evenly' }}>无</p> :
                 posts.map(post => (
-                    <Link to={`/detailedpost/?id=${post.id}`} key={post.id} style={{ marginTop: '10px' }}>
+                    <Link to={`/detailedpost?id=${post.id}`} key={post.id} style={{ marginTop: '10px' }}>
                         <div className='post'>
                             <h4>{post.title}</h4>
                             <p>Likes: {post.like} {`\u00A0\u00A0\u00A0\u00A0`}Comments: {post.commentsNum}</p>

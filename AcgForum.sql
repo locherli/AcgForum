@@ -122,7 +122,7 @@ create view latest_posts as
 select *
 from post
 where isRoot = true
-order by date desc;
+order by date desc, id desc;
 
 create view mostLiked_posts as
 select *

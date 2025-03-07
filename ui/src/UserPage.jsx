@@ -51,11 +51,12 @@ export default function UserPage() {
                     <>
                         <img
                             className="avatar"
-                            src={"defaultAvatar.png"}
+                            src={`http://${window.archiveUrl}/${user.avatarUrl}`}
                             style={{
                                 width: "50px",
                                 height: "50px",
                                 borderRadius: "3px",
+                                margin: '10px'
                             }}
                             alt=""
                         />
@@ -67,19 +68,6 @@ export default function UserPage() {
                         </p>
                         {/* SUBSCRIBE BUTTON */}
                         <button onClick={handleSubscribe}
-
-                            // width: 7vw;
-                            // height: 5vh;
-                            // display: flex;
-                            // justify-content: center;
-                            // align-items: center;
-                            // background-color: rgb(0, 0, 0, 0.32);
-                            // position: fixed;
-                            // top: 75vh;
-                            // right: 10vw;
-                            // text-decoration: none;
-                            // color: white;
-                            // border-radius: 5px;
                             style={{
                                 width: "7vw",
                                 height: "5vh",
@@ -87,8 +75,8 @@ export default function UserPage() {
                                 backgroundColor: "rgb(255,255,255, 0.32)",
                                 color: "white",
                                 borderRadius: "5px",
-                                border:"none",
-                                cursor:"pointer"
+                                border: "none",
+                                cursor: "pointer"
                             }}
                         >关注</button>
                         {/* Render PostList as a component */}

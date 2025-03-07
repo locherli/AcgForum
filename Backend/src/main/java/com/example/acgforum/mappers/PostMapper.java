@@ -51,8 +51,8 @@ public interface PostMapper {
 
 
     @Options(keyProperty = "id", useGeneratedKeys = true)
-    @Insert("insert into post (authorId, isRoot,root, title, date, likeNum, commentNum, content)" +
-            "        values (#{authorId},#{isRoot},#{root},#{title},#{date},#{likeNum},#{commentNum},#{content}) ")
+    @Insert("insert into post (authorId, isRoot,root, title, date, likeNum, commentNum, content, forum)" +
+            " values (#{authorId},#{isRoot},#{root},#{title},#{date},#{likeNum},#{commentNum},#{content},#{forum}) ")
     Integer insertPost(Post p);
 
 

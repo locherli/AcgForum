@@ -1,10 +1,10 @@
-.background{
+.background {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.link-button{
+.link-button {
     width: 7vw;
     height: 5vh;
     display: flex;
@@ -19,3 +19,19 @@
     border-radius: 5px;
 }
 
+
+#forumNav a {
+    width: 100px;
+}
+
+#forumNav img {
+    width: 100px;
+    margin: 3vw;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+#forumNav img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}

@@ -3,9 +3,6 @@ package com.example.acgforum.tables;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.aop.IntroductionAdvisor;
-
-import javax.swing.*;
 
 @Data
 @NoArgsConstructor

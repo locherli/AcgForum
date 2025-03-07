@@ -75,7 +75,7 @@ public interface UserMapper {
     @Delete("delete from user_info where id=#{id}")
     void deleteUserById(Integer id);
 
-    @Update("update user_info set userName=#{userName}, email=#{email}, avatar = #{avatarUrl}, " +
+    @Update("update user_info set userName=#{userName}, email=#{email}, avatar = #{avatarUrl}, selfIntro = #{selfIntro}, " +
             "phoneNum=#{phoneNum}, hc_password=#{hc_password}, gender=#{gender},age=#{age} where id=#{id}")
     void updateUser(User user);
 

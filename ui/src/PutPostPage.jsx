@@ -13,7 +13,7 @@ export default function PutPostPage() {
 
     const handleSubmit = () => {
 
-        if (cookies.get('isLogged') === false) {
+        if (cookies.get('isLogged') === false || cookies.get('isLogged') === undefined) {
             alert('尚未登陆');
             return;
         }
@@ -27,6 +27,14 @@ export default function PutPostPage() {
             return;
         }
 
+        console.log(JSON.stringify({
+            "title": title,
+            "content": content,
+            "userId": cookies.get('userId'),
+            "isRoot": true,
+            "forumId": 0    //means this post doesn't belong to any forum
+        }))
+
         fetch('http://' + window.basicUrl + '/put_post', {
             headers: { 'Content-Type': "application/json" },
             method: 'POST',
@@ -35,6 +43,7 @@ export default function PutPostPage() {
                 "content": content,
                 "userId": cookies.get('userId'),
                 "isRoot": true,
+                "forumId": 0    //means this post doesn't belong to any forum
             })
         })
             .catch(err => {

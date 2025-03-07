@@ -2,7 +2,6 @@ package com.example.acgforum;
 
 import com.example.acgforum.ReturnFormat.*;
 import com.example.acgforum.mappers.ForumMapper;
-import com.example.acgforum.mappers.*;
 import com.example.acgforum.mappers.PostMapper;
 import com.example.acgforum.mappers.UserMapper;
 import com.example.acgforum.tables.Forum;
@@ -11,20 +10,16 @@ import com.example.acgforum.tables.User;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
-
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -38,8 +33,6 @@ public class RequestController {
     UserMapper userMapper;
     @Resource(name = "forumMapper")
     ForumMapper forumMapper;
-    @Autowired
-    private MultipartProperties multipartProperties;
 
     // 辅助方法：计算帖子中关键字出现的次数
     public int countKeywordOccurrences(String content, String keyword) {
@@ -152,22 +145,29 @@ public class RequestController {
 
     @RequestMapping("/put_post")
     public void putPost(@RequestBody Map<String, String> requestBody) {
-        boolean isRoot = requestBody.get("isRoot").equalsIgnoreCase("true");
-        Integer root = null; // Declare the variable here
+        try {
+            boolean isRoot = requestBody.get("isRoot").equalsIgnoreCase("true");
+            Integer root = null; // Declare the variable here
 
+            if (!isRoot) /*if this post was a comment.*/ {
+                //comments number + 1
+                root = Integer.parseInt(requestBody.get("root"));
+                Post p = postMapper.getById(root);
+                p.setCommentNum(p.getCommentNum() + 1);
+                postMapper.update(p);
+            }
+            Post p = new Post(null, Integer.parseInt(requestBody.get("userId")), isRoot, root
+                    , requestBody.get("title"), LocalDateTime.now(), 0, 0
+                    , requestBody.get("content"), Integer.parseInt(requestBody.get("forumId")));
 
-        if (!isRoot) /*if this post was a comment.*/ {
-            //comments number + 1
-            root = Integer.parseInt(requestBody.get("root"));
-            Post p = postMapper.getById(root);
-            p.setCommentNum(p.getCommentNum() + 1);
-            postMapper.update(p);
+            postMapper.insertPost(p);
+
+        } catch (NumberFormatException | NullPointerException e) {
+            // Handle the case where parsing to integer fails or requestBody is null
+            System.out.println("Invalid user ID format or null request body: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
         }
-        Post p = new Post(null, Integer.parseInt(requestBody.get("userId")), isRoot, root
-                , requestBody.get("title"), LocalDateTime.now(), 0, 0
-                , requestBody.get("content"), Integer.parseInt(requestBody.get("forumId")));
-
-        postMapper.insertPost(p);
     }
 
     @RequestMapping("/login")
@@ -263,12 +263,12 @@ public class RequestController {
     public ArrayList<User> subscribedUsers(@RequestParam Integer id, @RequestParam Integer page) {
 
         ArrayList<User> subscribeUsers = userMapper.getSubscribedUsersLimit(id, 30, 30 * (page - 1));
-        ArrayList<ReturnUser> ReturnUsers = new ArrayList<>();
-
-        subscribeUsers.forEach(i -> {
-            ReturnUsers.add(new ReturnUser(true, i.getId(), i.getUserName(),
-                    i.getAvatarUrl(), i.getSelfIntro(), i.getFanNum(), i.getSubscribeNum()));
-        });
+//        ArrayList<ReturnUser> ReturnUsers = new ArrayList<>();
+//
+//        subscribeUsers.forEach(i -> {
+//            ReturnUsers.add(new ReturnUser(true, i.getId(), i.getUserName(),
+//                    i.getAvatarUrl(), i.getSelfIntro(), i.getFanNum(), i.getSubscribeNum()));
+//        });
 
         return subscribeUsers;
     }
@@ -395,7 +395,7 @@ public class RequestController {
             return rm;
         }
 
-        Map<String, Object> rm = new HashMap();
+        Map<String, Object> rm = new HashMap<>();
         rm.put("isOk", true);
         return rm;
     }
@@ -416,7 +416,7 @@ public class RequestController {
             String extname = iconFile.getOriginalFilename().substring(lastDot);
 
             String fileName = UUID.randomUUID() + extname;
-            File fLocation = new File("/www/wwwroot/47.106.126.183_5555/"+ fileName);
+            File fLocation = new File("/www/wwwroot/47.106.126.183_5555/" + fileName);
             logger.info("FILE PATH: " + fLocation.getAbsolutePath());
 
             if (!fLocation.exists())
@@ -436,14 +436,60 @@ public class RequestController {
             return rm;
         }
 
-        Map<String, Object> rm = new HashMap();
+        Map<String, Object> rm = new HashMap<>();
         rm.put("isOk", true);
         return rm;
     }
 
-    @GetMapping("/forum/{forumId}")
-    Forum getForumById(@PathVariable Integer id){
+    @GetMapping("/forum/{id}")
+    Forum getForumById(@PathVariable Integer id) {
         return forumMapper.getForumById(id);
     }
+
+
+    @PutMapping("alter_user_intro")
+    void alterUserIntro(@RequestBody Map<String, String> requestBody) {
+        try {
+            Integer userId = Integer.parseInt(requestBody.get("userId"));
+            String newIntro = requestBody.get("newIntro");
+            User u = userMapper.getUserById(userId);
+
+            assert newIntro != null;
+            assert u != null;
+            u.setSelfIntro(newIntro);
+            userMapper.updateUser(u);
+
+        } catch (NumberFormatException | NullPointerException e) {
+            // Handle the case where parsing to integer fails or requestBody is null
+            logger.error("Invalid user ID format or null request body: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/alter_forum_intro")
+    void alterForumIntro(@RequestBody Map<String, String> requestBody) {
+        try {
+            Integer forumId = Integer.parseInt(requestBody.get("forumId"));
+            String newIntro = requestBody.get("newIntro");
+            Forum forum = forumMapper.getForumById(forumId);
+            if (forum == null || newIntro == null)
+                logger.error("forum or introduction were null.");
+
+            assert forum != null;
+            forum.setIntroduction(newIntro);
+            forumMapper.updateForum(forum);
+
+
+        } catch (NumberFormatException | NullPointerException e) {
+            // Handle the case where parsing to integer fails or requestBody is null
+            logger.error("Invalid forum ID format or null request body: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("error in endpoint /alter_forum_intro: {}", e.getMessage());
+        }
+    }
+
+
 
 }

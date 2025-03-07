@@ -8,7 +8,9 @@ import PutPostPage from './PutPostPage';
 import MyselfPage from './MyselfPage'
 import DetailedPostPage from './DetailedPostPage';
 import UserPage from './UserPage';
-
+import SearchResultPage from './SearchResultPage';
+import ForumPage from './ForumPage';
+import PutPostPageForum from './PutPostPageForum';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    <div style={{
@@ -23,9 +25,12 @@ root.render(
             <Route path='/login' element={<LoginPage />} />
             <Route path='/signup' element={<SignupPage />} />
             <Route path='/putpost' element={<PutPostPage />} />
+            <Route path='/putpost_forum' element={<PutPostPageForum />} />
             <Route path='/myself' element={<MyselfPage />} />
             <Route path='/user' element={<UserPage />} />
             <Route path='/detailedpost' element={<DetailedPostPage />} />
+            <Route path='/search' element={<SearchResultPage />} />
+            <Route path='/forum' element={<ForumPage />} />
          </Routes>
       </Router>
    </div>

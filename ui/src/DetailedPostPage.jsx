@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { redirect, useLocation, useParams, Link, useNavigate } from "react-router-dom";
-import './imgs/karen.jpeg';
-import './DetailedPostPage.css';
 import { Cookies } from "react-cookie";
 
 export default function DetailedPostPage() {
@@ -11,7 +9,9 @@ export default function DetailedPostPage() {
     const id = searchParams.get('id');
     const cookies = new Cookies();
     const [post, setPost] = useState(null);
+    const [author, setAuthor] = useState(null);
     const [isPending, setIsPending] = useState(true);
+    const [isPendingAuthor, setIsPendingAuthor] = useState(true);
     const [isLiked, setIsLiked] = useState(false);
     const [isCollected, setIsCollected] = useState(false);
     const [textArea, setTextArea] = useState('');
@@ -38,6 +38,11 @@ export default function DetailedPostPage() {
                 } else {
                     setIsPending(false); // If no comments, stop loading
                 }
+
+                fetch(`http://${window.basicUrl}/user/${data.authorId}`)
+                    .then(response => response.json())
+                    .then(data => { setAuthor(data); setIsPendingAuthor(false); })
+                    .catch(err => console.log(err));
             })
             .catch(err => {
                 console.log(err);
@@ -59,6 +64,10 @@ export default function DetailedPostPage() {
     function handleLike() {
         if (cookies.get('isLogged') === undefined || cookies.get('isLogged') === false) {
             alert('请先登录');
+            return;
+        }
+        if (isLiked) {
+            alert('您已经点过赞!');
             return;
         }
 
@@ -112,6 +121,11 @@ export default function DetailedPostPage() {
 
     function handleComment() {
 
+        if (cookies.get('isLogged') === undefined || cookies.get('isLogged') === false) {
+            alert('请先登录');
+            return;
+        }
+
         if (textArea === '') {
             alert('内容为空！');
             return;
@@ -128,7 +142,8 @@ export default function DetailedPostPage() {
                 content: textArea,
                 userId: cookies.get('userId'),
                 isRoot: false,
-                root: id
+                root: id,
+                forumId: 0  //means this post doesn't belong to any forum.
             })
         }).catch(err => { console.log(err) });
 
@@ -136,7 +151,7 @@ export default function DetailedPostPage() {
         setTextArea('');
     }
 
-    return <div className="backImg">
+    return <div>
 
         <div className="DetailedPage"
             style={{
@@ -170,12 +185,29 @@ export default function DetailedPostPage() {
 
                         {post.title ? <h2>{post.title}</h2> : <></>}
 
-                        {post.authorName ?
+
+                        {post.authorName && !isPendingAuthor ?
                             <p>
                                 <Link to={`/user?id=${post.authorId}`}
-                                    style={{ textDecoration: 'none', color: 'white' }}>作者:{post.authorName} </Link>
-                                {post.date} {post.like} commentNum: {post.commentsNum}
-                            </p> : <></>}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'white',
+                                        display: "flex",
+                                        alignItems: 'center'
+                                    }}>
+                                    <img alt="" src={`http://${window.archiveUrl}/${author.avatarUrl}`}
+                                        style={{
+                                            width: '50px',
+                                            borderRadius: '5px',
+                                            margin: '10px'
+                                        }}
+                                    ></img>
+                                    {post.authorName}
+                                    <br /><br />
+                                </Link>
+                                {post.date.slice(0, 10)}
+
+                            </p> : <p>Loading...</p>}
 
 
                         <p style={{ whiteSpace: 'pre-wrap' }} >{post.content}</p>

@@ -1,6 +1,6 @@
 ### SHORT INTRODUCTION OF THIS WEB PROJECT
 
-This is a web project that I created for fun, it's a forum as you can see, which designed for ACG lovers to communicate. (I know nobody wants to use it cause it's sucked orz ) Anyway, let me make some simple description for you in case you want use part of my code.
+This is a web project that I created for fun, it's a forum as you can see, which designed for ACG lovers to communicate. (I know nobody wants to use it cause it's sucked orz ) Anyway, let me make some simple description for you in case you want to use part of my code.
 
 #### FRONT END
 

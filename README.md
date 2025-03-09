@@ -24,4 +24,9 @@ Backend was based on spring boot, use maven to manage all the dependencies. If y
 mvn clean
 mvn package
 ```
+![图片](https://github.com/locherli/AcgForum/blob/master/ImgDisplay/Screenshot%202025-03-09%20192048.png?raw=true)
+![图片](https://github.com/locherli/AcgForum/blob/master/ImgDisplay/Screenshot%202025-03-09%20192102.png?raw=true)
+![图片](https://github.com/locherli/AcgForum/blob/master/ImgDisplay/Screenshot%202025-03-09%20192128.png?raw=true)
+
+
 

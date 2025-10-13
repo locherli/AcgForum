@@ -16,11 +16,13 @@
           <entry name="$PROJECT_DIR$/../../../maven_repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
         <module name="acgForum" />
+        <module name="Backend" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Backend" options="-parameters" />
       <module name="acgForum" options="-parameters" />
     </option>
   </component>

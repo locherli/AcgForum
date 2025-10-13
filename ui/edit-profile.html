@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - ForumSite</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/js/utils.js"></script>
+    <link href="./css/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans antialiased">
+    <div id="app" class="min-h-screen flex flex-col">
+
+        <main class="flex-grow container mx-auto px-4 py-6 flex justify-center">
+            <div class="w-3/4 pr-4">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h1 class="text-2xl font-bold mb-6 text-blue-600">Edit Profile</h1>
+
+                    <div class="mb-8">
+                        <h2 class="text-xl font-semibold mb-4">Current Profile</h2>
+                        <div class="flex items-center mb-4">
+                            <img :src="'/uploads/' + user.avatarUrl" onerror="this.src = 'image/default-avatar.png'"
+                                alt="Avatar" class="w-24 h-24 rounded mr-4 border border-gray-300">
+                            <div>
+                                <h3 class="text-lg font-bold">{{ user.userName }}</h3>
+                                <p class="text-gray-600">{{ user.selfIntro }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form @submit.prevent="saveChanges" class="space-y-4">
+                        <div>
+                            <label for="userName" class="block text-sm font-medium text-gray-700">Username</label>
+                            <input v-model="user.userName" id="userName" type="text" required maxlength="32"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="selfIntro" class="block text-sm font-medium text-gray-700">Self
+                                Introduction</label>
+                            <textarea v-model="user.selfIntro" id="selfIntro" rows="3"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </textarea>
+                        </div>
+                        <div>
+                            <label for="phoneNum" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input v-model="user.phoneNum" id="phoneNum" type="tel"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Gender</label>
+                            <div class="mt-1 flex items-center">
+                                <label class="mr-4">
+                                    <input type="radio" v-model="user.gender" :value="true" class="mr-1">
+                                    Male
+                                </label>
+                                <label>
+                                    <input type="radio" v-model="user.gender" :value="false" class="mr-1">
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+                            <input v-model="user.age" id="age" type="number" min="0"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save
+                            Changes</button>
+                    </form>
+
+                    <hr class="my-8">
+
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">Change Avatar</h2>
+                        <div v-if="previewUrl" class="mb-4">
+                            <img :src="previewUrl" alt="Avatar Preview"
+                                class="w-24 h-24 rounded border border-gray-300">
+                        </div>
+                        <input type="file" accept="image/*" @change="handleFileChange" class="mb-4"></br>
+                        <button @click="uploadAvatar" :disabled="!avatarFile"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400">Upload
+                            Avatar</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    currentUser: { // Assume this is populated similarly to homepage
+                        name: 'Example User',
+                        avatarUrl: '/default-avatar.png',
+                        selfIntro: 'Hello, world!'
+                    },
+                    showUserMenu: false,
+                    user: {
+                        userName: '',
+                        selfIntro: '',
+                        phoneNum: '',
+                        gender: true,
+                        age: 0,
+                        avatarUrl: ''
+                    },
+                    avatarFile: null,
+                    previewUrl: null,
+                    notificationCount: 0 // Placeholder
+                };
+            },
+            mounted() {
+                this.fetchUserData();
+            },
+            methods: {
+                toggleUserMenu() {
+                    this.showUserMenu = !this.showUserMenu;
+                },
+                async logout() {
+                    await fetch('/logout', { method: 'GET' });
+                    window.location.href = '/';
+                },
+                async fetchUserData() {
+                    const response = await fetch('/user/myself');
+                    const data = await response.json();
+
+                    this.user = {
+                        userName: data.name || '',
+                        selfIntro: data.selfIntro || '',
+                        phoneNum: data.phoneNum || '', // Assuming backend returns these
+                        gender: data.gender ?? true,
+                        age: data.age || 0,
+                        avatarUrl: data.avatarUrl || '/default-avatar.png'
+                    };
+                },
+                async saveChanges() {
+                    const params = new URLSearchParams({
+                        userName: this.user.userName,
+                        selfIntro: this.user.selfIntro,
+                        phoneNum: this.user.phoneNum,
+                        gender: this.user.gender.toString(),
+                        age: this.user.age.toString()
+                    });
+                    const response = await fetch(`/alter_user_info?${params}`, { method: 'POST' });
+                    const result = await response.json();
+                    console.log(result)
+                    if (result.success == false) { showToast('请先登录'); }
+                    if (result.success == true) { showToast('更新成功'); }
+                    this.fetchUserData(); // Refresh
+                },
+                handleFileChange(event) {
+                    this.avatarFile = event.target.files[0];
+                    this.previewUrl = URL.createObjectURL(this.avatarFile);
+                },
+                async uploadAvatar() {
+                    if (!this.avatarFile) return;
+                    const formData = new FormData();
+                    formData.append('avatarFile', this.avatarFile);
+                    await fetch('/change_avatar', { method: 'POST', body: formData });
+                    alert('Avatar updated successfully!');
+                    this.avatarFile = null;
+                    this.previewUrl = null;
+                    this.fetchUserData(); // Refresh
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

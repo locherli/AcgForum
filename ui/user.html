@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 5%;
+            margin-right: 20px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 24px;
+            margin: 0;
+            color: #007bff;
+        }
+
+        .user-intro {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+            color: #666666;
+        }
+
+        .follow-button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .follow-button:hover {
+            background-color: #0056b3;
+        }
+
+        .posts-list {
+            margin-top: 30px;
+        }
+
+        .post-item {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .post-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .post-title {
+            font-size: 18px;
+            margin: 0 0 10px;
+            color: #007bff;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .page-button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-button:hover {
+            background-color: #0056b3;
+        }
+
+        .page-button.disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container" v-if="user">
+            <div class="user-header">
+                <img :src="'./uploads/' + user.avatarUrl" alt="Avatar" class="user-avatar"
+                    onerror="this.src = '/image/default-avatar.png'">
+                <div class="user-info">
+                    <h2 class="user-name">{{ user.name }}</h2>
+                    <p class="user-intro">{{ user.selfIntro }}</p>
+                    <div class="user-stats">
+                        <span>Age: {{ user.age }}</span>
+                        <!-- <span>Phone: {{ user.phoneNum }}</span> -->
+                        <span>Fans: {{ user.fanNum }}</span>
+                        <span>Following: {{ user.subscribeNum }}</span>
+                    </div>
+
+                </div>
+                <button v-if="!isMe" class="follow-button" @click="toggleFollow">
+                    {{ isFollowing ? 'Unfollow' : 'Follow' }}
+                </button>
+            </div>
+            <div class="posts-list">
+                <h3>Posts</h3>
+                <div v-for="post in currentPosts" :key="post.id" class="post-item" @click="goToPost(post.id)">
+                    <h4 class="post-title">{{ post.title }}</h4>
+                    <div class="post-meta">
+                        <span>Date: {{ post.date }}</span>
+                        <span>Likes: {{ post.like }}</span>
+                        <span>Comments: {{ post.commentsNum }}</span>
+                    </div>
+                </div>
+                <p v-if="allPosts.length === 0">No posts yet.</p>
+                <div class="pagination" v-if="totalPages > 1">
+                    <button class="page-button" :class="{ disabled: currentPage === 1 }" @click="prevPage"
+                        :disabled="currentPage === 1">Previous</button>
+                    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                    <button class="page-button" :class="{ disabled: currentPage === totalPages }" @click="nextPage"
+                        :disabled="currentPage === totalPages">Next</button>
+                </div>
+            </div>
+        </div>
+        <p v-else>Loading...</p>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    user: null,
+                    allPosts: [],
+                    currentPage: 1,
+                    postsPerPage: 10,
+                    me: null,
+                    isFollowing: false,
+                    isMe: false
+                };
+            },
+            computed: {
+                currentPosts() {
+                    const start = (this.currentPage - 1) * this.postsPerPage;
+                    const end = start + this.postsPerPage;
+                    return this.allPosts.slice(start, end);
+                },
+                totalPages() {
+                    return Math.ceil(this.allPosts.length / this.postsPerPage);
+                }
+            },
+            async mounted() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                if (!id) {
+                    console.error('No user ID provided');
+                    return;
+                }
+
+                // Fetch current user
+                const meRes = await fetch('/user/myself');
+                this.me = await meRes.json();
+                this.isMe = this.me.id == id;
+
+                // Fetch target user
+                const userRes = await fetch(`/user?id=${id}`);
+                this.user = await userRes.json();
+
+                // Fetch posts
+                const postsRes = await fetch(`/posts_by_author?authorId=${id}`);
+                this.allPosts = await postsRes.json();
+
+                // Check if following (if not me)
+                if (!this.isMe) {
+                    await this.checkFollowing(id);
+                }
+            },
+            methods: {
+                async checkFollowing(targetId) {
+                    let page = 1;
+                    while (true) {
+                        const res = await fetch(`/my_subscribed_users?page=${page}`);
+                        const users = await res.json();
+                        if (users.length === 0) {
+                            break;
+                        }
+                        if (users.some(u => u.id == targetId)) {
+                            this.isFollowing = true;
+                            break;
+                        }
+                        page++;
+                    }
+                },
+                async toggleFollow() {
+                    const id = this.user.id;
+                    if (this.isFollowing) {
+                        // Unsubscribe
+                        await fetch(`/unsubscribe_user?myId=${this.me.id}&userId=${id}`, { method: 'POST' });
+                        this.isFollowing = false;
+                        this.user.fanNum--;
+                    } else {
+                        // Subscribe
+                        await fetch(`/subscribe_user?userId=${id}`, { method: 'POST' });
+                        this.isFollowing = true;
+                        this.user.fanNum++;
+                    }
+                },
+                goToPost(postId) {
+                    window.location.href = `post.html?id=${postId}`;
+                },
+                prevPage() {
+                    if (this.currentPage > 1) {
+                        this.currentPage--;
+                    }
+                },
+                nextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.currentPage++;
+                    }
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

@@ -11,8 +11,26 @@ public interface UserMapper {
     @Select("select count(*)>=1 from user_collection where user = #{userId} and post = #{postId}")
     Boolean isCollected(Integer userId, Integer postId);
 
-    @Select("select * from user_info where userName like concat('%',#{keyword},'%')")
+/*    @Select("select *, avatar as avatarUrl from user_info where userName like concat('%',#{keyword},'%')")
     ArrayList<User> searchUsers(String keyword);
+
+    @Select("select *, avatar as avatarUrl from user_info where userName like concat('%',#{keyword},'%') limit #{num} offset #{offset}")
+    ArrayList<User> searchUsersLimit(String keyword, Integer num, Integer offset);*/
+
+    @Select("SELECT ui.*, ui.avatar as avatarUrl, COUNT(rsf.id_fan) AS fanNum " +
+            "FROM user_info ui " +
+            "LEFT JOIN ref_self_fan rsf ON ui.id = rsf.id " +
+            "WHERE ui.userName LIKE CONCAT('%', #{keyword}, '%') " +
+            "GROUP BY ui.id")
+    ArrayList<User> searchUsers(String keyword);
+
+    @Select("SELECT ui.*, ui.avatar as avatarUrl, COUNT(rsf.id_fan) AS fanNum " +
+            "FROM user_info ui " +
+            "LEFT JOIN ref_self_fan rsf ON ui.id = rsf.id " +
+            "WHERE ui.userName LIKE CONCAT('%', #{keyword}, '%') " +
+            "GROUP BY ui.id " +
+            "LIMIT #{num} OFFSET #{offset}")
+    ArrayList<User> searchUsersLimit(String keyword, Integer num, Integer offset);
 
     @Select("select *,avatar as avatarUrl " +
             ",(select count(*) from ref_self_fan where id=#{id}) as fanNum " +
@@ -41,7 +59,7 @@ public interface UserMapper {
             "limit #{num} offset #{offset}")
     ArrayList<User> getSubscribedUsersLimit(Integer userId, Integer num, Integer offset);
 
-    @Select("select fans.id as id, userName,email,selfIntro,phoneNum,hc_password,gender,age, " +
+    @Select("select fans.id as id, userName,email,self_intro,phoneNum,hc_password,gender,age, " +
             "(select count(*) from ref_self_fan where ref_self_fan.id = fans.id) as fanNum, " +
             "(select count(*) from ref_self_fan where ref_self_fan.id_fan = fans.id) as subscribeNum " +
             "from user_info as fans " +
@@ -49,9 +67,17 @@ public interface UserMapper {
             "where ref_self_fan.id = #{userId}")
     ArrayList<User> getFansById(Integer userId);
 
+    @Select("select fans.id as id, userName,email,self_intro,phoneNum,hc_password,gender,age, " +
+            "(select count(*) from ref_self_fan where ref_self_fan.id = fans.id) as fanNum, " +
+            "(select count(*) from ref_self_fan where ref_self_fan.id_fan = fans.id) as subscribeNum " +
+            "from user_info as fans " +
+            "join ref_self_fan on ref_self_fan.id_fan = fans.id " +
+            "where ref_self_fan.id = #{userId} limit #{num} offset #{offset}")
+    ArrayList<User> getFansByIdLimit(Integer userId, Integer num, Integer offset);
+
     @Options(keyProperty = "id", useGeneratedKeys = true)
     @Insert("insert into user_info (userName, email, phoneNum, hc_password, gender, age) value" +
-            "  (#{userName},#{email}, #{phoneNum}, #{hc_password}, #{gender}, #{age})")
+            "  (#{userName},#{email}, #{phoneNum}, #{hcPassword}, #{gender}, #{age})")
     void insertUser(User user);
 
 
@@ -75,8 +101,8 @@ public interface UserMapper {
     @Delete("delete from user_info where id=#{id}")
     void deleteUserById(Integer id);
 
-    @Update("update user_info set userName=#{userName}, email=#{email}, avatar = #{avatarUrl}, selfIntro = #{selfIntro}, " +
-            "phoneNum=#{phoneNum}, hc_password=#{hc_password}, gender=#{gender},age=#{age} where id=#{id}")
+    @Update("update user_info set userName=#{userName}, email=#{email}, avatar = #{avatarUrl}, self_intro = #{selfIntro}, " +
+            "phoneNum=#{phoneNum}, hc_password=#{hcPassword}, gender=#{gender},age=#{age} where id=#{id}")
     void updateUser(User user);
 
     @Select("select count(*)=0 from user_info where email = #{email}")
@@ -90,6 +116,9 @@ public interface UserMapper {
 
     @Select("Select count(*)>=1 from user_likedPost where user=#{userId} and post=#{postId}")
     Boolean isLiked(Integer userId, Integer postId);
+
+    @Select("select authorId from post where id = #{id}")
+    Integer getAuthorIdByPostId(Integer id);
 
 
 }

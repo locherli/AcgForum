@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write a New Post</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./js/marked.min.js"></script>
+    <script src="./js/utils.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 90vw;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2vw;
+            background-color: #f9f9f9;
+            line-height: 1.6;
+        }
+
+        #app {
+            background: white;
+            padding: 3vw;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: clamp(1.5em, 4vw, 2.5em);
+            margin-bottom: 2vw;
+            color: #333;
+        }
+
+        .title-input {
+            width: 100%;
+            padding: 1vw;
+            font-size: clamp(1em, 2vw, 1.5em);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 2vw;
+            box-sizing: border-box;
+        }
+
+        .content-section {
+            margin-bottom: 2vw;
+        }
+
+        .content-section h2 {
+            font-size: clamp(1em, 2.5vw, 1.3em);
+            margin-bottom: 1vw;
+            color: #333;
+        }
+
+        .content-row {
+            display: flex;
+            gap: 2vw;
+        }
+
+        .textarea {
+            flex: 1;
+            height: clamp(300px, 40vw, 500px);
+            padding: 1vw;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: clamp(12px, 1.5vw, 16px);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            box-sizing: border-box;
+            background-color: #fafafa;
+        }
+
+        .preview {
+            flex: 1;
+            height: clamp(300px, 40vw, 500px);
+            padding: 1vw;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow-y: auto;
+            background-color: white;
+            line-height: 1.6;
+        }
+
+        .preview h1,
+        .preview h2,
+        .preview h3 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .preview p {
+            margin-bottom: 1em;
+        }
+
+        .preview code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .preview pre {
+            background-color: #f4f4f4;
+            padding: 1vw;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .preview blockquote {
+            border-left: 4px solid #ddd;
+            padding-left: 1vw;
+            margin: 1em 0;
+            color: #666;
+        }
+
+        .preview ul,
+        .preview ol {
+            margin-bottom: 1em;
+            padding-left: 2vw;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            padding: 1vw 2vw;
+            border: none;
+            border-radius: 4px;
+            font-size: clamp(1em, 2vw, 1.2em);
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .content-row {
+                flex-direction: column;
+            }
+
+            .textarea,
+            .preview {
+                height: clamp(200px, 50vw, 400px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Write a New Post</h1>
+        <input v-model="title" class="title-input" placeholder="Title">
+        <div class="content-section">
+            <h2>Content (Markdown)</h2>
+            <div class="content-row">
+                <textarea v-model="content" class="textarea"
+                    placeholder="Write your content here using Markdown..."></textarea>
+                <div class="preview" v-html="preview"></div>
+            </div>
+        </div>
+        <button class="submit-button" @click="submit">Post</button>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    title: '',
+                    content: '',
+                    forumId:''
+                };
+            },
+            computed: {
+                preview() {
+                    if (!this.content) return '';
+                    return marked.parse(this.content, { breaks: true });
+                }
+            },
+            mounted() {
+                // 从URL参数中获取forum_id
+                const urlParams = new URLSearchParams(window.location.search);
+                this.forumId = urlParams.get('forum_id');
+                
+                // 检查是否获取到forum_id
+                if (!this.forumId) {
+                    showToast('Error: forum_id not found in URL');
+                }
+            },
+            methods: {
+                submit() {
+                    if (!this.title || !this.content) {
+                        showToast('Please fill in all required fields.');
+                        return;
+                    }
+
+                    const formData = new URLSearchParams();
+                    formData.append('title', this.title);
+                    formData.append('content', this.content);
+                    formData.append('forumId', this.forumId);
+
+                    fetch('/put_post', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Post submitted successfully!');
+                                window.location.href = 'index.html';
+                            } else if (data.msg === 'unauthorized') {
+                                alert('You need to log in to post.');
+                                window.location.href = 'auth.html';
+                            } else {
+                                showToast(data.message || 'An error occurred.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showToast('An unexpected error occurred.');
+                        });
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

@@ -8,15 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReturnUser {
-    private Boolean token;
     private Integer id;
     private String name;
     private String avatarUrl;
     private String selfIntro;
     private Integer fanNum;
     private Integer subscribeNum;
-
-    public ReturnUser(Boolean token) {
-        this.token = token;
-    }
+    private String phoneNum;
+    private Integer age;
 }

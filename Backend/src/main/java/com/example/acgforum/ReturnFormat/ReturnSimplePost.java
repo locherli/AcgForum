@@ -14,5 +14,7 @@ public class ReturnSimplePost {
     private LocalDateTime date;
     private Integer like;
     private Integer commentsNum;
+    private String authorName;
+    private String avatarUrl;
 
 }

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Post</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/marked.min.js"></script>
+    <script src="js/utils.js"></script>
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --bg-color: #f3f4f6;
+            --text-color: #374151;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #10b981;
+            --success-hover: #059669;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-radius: 0.5rem;
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        /* Layout */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .main-content {
+            padding: 2rem 0;
+            flex-grow: 1;
+            display: flex;
+        }
+
+        .content-area {
+            width: 75%;
+            padding-right: 2rem;
+        }
+
+        .sidebar {
+            width: 25%;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Typography */
+        .text-3xl {
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-gray-600 {
+            color: var(--text-light);
+        }
+
+        .text-gray-500 {
+            color: #6b7280;
+        }
+
+        /* Spacing */
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+
+        .mr-4 {
+            margin-right: 1rem;
+        }
+
+        .mx-2 {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .space-y-2>*+* {
+            margin-top: 0.5rem;
+        }
+
+        .space-x-4>*+* {
+            margin-left: 1rem;
+        }
+
+        /* Flexbox */
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .flex-grow {
+            flex-grow: 1;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+
+        /* Textarea 样式 */
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: var(--border-radius);
+            background-color: var(--white);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea::placeholder {
+            color: var(--text-light);
+        }
+
+
+        /* 提交按钮样式 - 修正选择器 */
+        .card button {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .card button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Avatar */
+        .avatar {
+            height: 3rem;
+            width: 3rem;
+            border-radius: 10%;
+        }
+
+        /* Borders */
+        .border-b {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .last-border-b-0:last-child {
+            border-bottom: none;
+        }
+
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Markdown content */
+        .prose {
+            max-width: none;
+        }
+
+        .prose h1,
+        .prose h2,
+        .prose h3,
+        .prose h4,
+        .prose h5,
+        .prose h6 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .prose p {
+            margin-bottom: 1rem;
+        }
+
+        .prose ul,
+        .prose ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .prose li {
+            margin-bottom: 0.25rem;
+        }
+
+        .prose blockquote {
+            border-left: 4px solid #e5e7eb;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .prose code {
+            background-color: #f3f4f6;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+
+        .prose pre {
+            background-color: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .prose pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .prose a {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .prose img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .content-area,
+            .sidebar {
+                width: 100%;
+                padding-right: 0;
+            }
+
+            .sidebar {
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="app">
+        <!-- Main Content -->
+        <main class="container main-content">
+            <div class="content-area">
+                <!-- Post Content -->
+                <div v-if="post" class="card">
+                    <h1 class="text-3xl">{{ post.title }}</h1>
+                    <div class="flex items-center text-gray-600 mb-4">
+                        <span>By {{ post.authorName }}</span>
+                        <span class="mx-2">|</span>
+                        <span>{{ formatDate(post.date) }}</span>
+                        <span class="mx-2">|</span>
+                        <span>{{ post.commentsNum }} replies</span>
+                    </div>
+                    <div class="prose" v-html="renderMarkdown(post.content)"></div>
+                    <div class="mt-6 flex space-x-4">
+                        <button @click="likePost" class="btn btn-primary">
+                            Like ({{ post.like }})
+                        </button>
+                        <button @click="collectPost" class="btn btn-success">
+                            Collect
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Put Comment -->
+                <div class="card">
+                    <textarea v-model="textarea">put comment</textarea>
+                    <button @click="putComment">submit</button>
+                </div>
+
+                <!-- Comments Section -->
+                <div v-if="comments.length > 0" class="card">
+                    <h2 class="text-2xl">Comments</h2>
+                    <div v-for="comment in comments" :key="comment.id" class="border-b py-4 last-border-b-0">
+                        <a :href="'post.html?id=' + comment.id">
+                            <div class="flex items-center text-gray-600 mb-2">
+                                <span>By User {{ comment.author }}</span>
+                                <span class="mx-2">|</span>
+                                <span>{{ formatDate(comment.date) }}</span>
+                            </div>
+                            <p>{{ comment.content }}</p>
+                            <div class="text-sm text-gray-500 mt-2">
+                                {{ comment.like }} likes | {{ comment.commentsNum }} replies
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div v-else class="card">
+                    <p>No comments yet.</p>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div v-if="author" class="card">
+                    <a :href="'user.html?id=' + author.id">
+                        <div class="flex items-center mb-4">
+                            <img :src="'/uploads/' + author.avatarUrl" alt="Avatar" class="avatar mr-4"
+                                onerror="this.src = '/image/default-avatar.png'">
+                            <div>
+                                <h3 class="font-bold">{{ author.name }}</h3>
+                                <p class="text-gray-600">{{ author.selfIntro }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div v-else-if="loading" class="card">
+                    <p>Loading author...</p>
+                </div>
+                <div v-else class="card">
+                    <p>Author not found.</p>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    post: null,
+                    textarea: '',
+                    comments: [],
+                    author: null,
+                    isLoggedIn: false,
+                    showUserMenu: false,
+                    postId: new URLSearchParams(window.location.search).get('id'),
+                    loading: true
+                };
+            },
+            async mounted() {
+                this.checkLogin();
+                if (this.postId) {
+                    try {
+                        await this.fetchAuthor();
+                        await this.fetchPost();
+                        await this.fetchComments();
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            },
+            methods: {
+                async checkLogin() {
+                    try {
+                        const response = await fetch('/is_login');
+                        const result = await response.json();
+                        this.isLoggedIn = result.code == 200;
+                    } catch (error) {
+                        console.error('Error checking login:', error);
+                    }
+                },
+                async putComment() {
+                    try {
+                        const response = await fetch(`/put_comment?root=${this.postId}&content=${this.textarea}`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        const result = await response.json();
+                        if (result.success === true) {
+                            showToast('Put comment success');
+                        } else if (result.msg == 'unauthorized') {
+                            showToast('Please login first');
+                        } else {
+                            showToast('Put comment error');
+                            console.error(result);
+                        }
+                    } catch (error) {
+                        console.error('Error put comment: ', error);
+                    }
+                },
+                async fetchAuthor() {
+                    try {
+                        const response = await fetch(`/author_of_the_post?postId=${this.postId}`);
+                        this.author = await response.json();
+                    } catch (error) {
+                        console.error('Error fetching author:', error);
+                    }
+                },
+                async fetchPost() {
+                    try {
+                        const response = await fetch(`/post?id=${this.postId}`);
+                        const data = await response.json();
+                        this.post = data;
+                    } catch (error) {
+                        console.error('Error fetching post:', error);
+                    }
+                },
+                async fetchComments() {
+                    try {
+                        const response = await fetch(`/subposts?id=${this.postId}&page=1`);
+                        this.comments = await response.json();
+                    } catch (error) {
+                        console.error('Error fetching comments:', error);
+                    }
+                },
+                async likePost() {
+                    if (!this.isLoggedIn) {
+                        alert('Please login to like');
+                        return;
+                    }
+                    try {
+                        const response = await fetch(`/like_post?postId=${this.postId}`, { method: 'POST' });
+                        const result = await response.json();
+                        if (result.isOk === true) { // Assuming returns {something: true}
+                            this.post.like += 1;
+                            showToast('thanks for like!');
+                        } else if (result.isOk === false) {
+                            showToast('you already liked!');
+                        }
+                    } catch (error) {
+                        console.error('Error liking post:', error);
+                    }
+                },
+                async collectPost() {
+                    if (!this.isLoggedIn) {
+                        alert('Please login to collect');
+                        return;
+                    }
+                    try {
+                        const response = await fetch(`/collect_post?postId=${this.postId}`, { method: 'POST' });
+                        const result = await response.json();
+
+                        if (result.isOk === true)
+                            showToast('Post collected');
+                    } catch (error) {
+                        console.error('Error collecting post:', error);
+                    }
+                },
+                renderMarkdown(content) {
+                    return marked.parse(content);
+                },
+                formatDate(date) {
+                    return new Date(date).toLocaleString();
+                },
+                toggleUserMenu() {
+                    this.showUserMenu = !this.showUserMenu;
+                },
+                async logout() {
+                    try {
+                        await fetch('/logout', { method: 'GET' });
+                        this.isLoggedIn = false;
+                        window.location.href = '/';
+                    } catch (error) {
+                        console.error('Error logging out:', error);
+                    }
+                }
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

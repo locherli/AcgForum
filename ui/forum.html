@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <script src="./js/vue.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6', // blue-500
+                        secondary: '#FFFFFF', // white
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-secondary text-gray-900">
+    <div id="app" class="container mx-auto p-4">
+        <!-- Forum Information -->
+        <div v-if="forumInfo" class="bg-white shadow-md rounded-lg p-6 mb-6 border border-blue-200">
+            <div class="flex items-center mb-4">
+                <img v-if="forumInfo.icon" :src="forumInfo.icon" alt="Forum Icon" class="w-16 h-16 rounded-full mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-primary">{{ forumInfo.name }}</h1>
+                    <p class="text-gray-600">{{ forumInfo.introduction }}</p>
+                </div>
+            </div>
+            <div class="flex space-x-4 text-sm text-gray-500">
+                <span>Members: {{ forumInfo.userNum }}</span>
+                <span>Posts: {{ forumInfo.postNum }}</span>
+            </div>
+        </div>
+
+        <!-- Write Button -->
+        <div class="mb-4">
+            <button @click="goToWrite" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">Write New Post</button>
+        </div>
+
+        <!-- Posts List -->
+        <div v-if="posts.length > 0" class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-blue-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Likes</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comments</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr v-for="post in posts" :key="post.id" class="hover:bg-blue-50 cursor-pointer" @click="goToPost(post.id)">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">{{ post.title }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center">
+                            <img v-if="post.avatarUrl" :src="'/uploads/' + post.avatarUrl" alt="Author Avatar" class="w-6 h-6 rounded mr-2">
+                            {{ post.authorName }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(post.date) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ post.like }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ post.commentsNum }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div v-else class="bg-white shadow-md rounded-lg p-6 mb-6 text-center text-gray-500">
+            No posts available in this forum.
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="totalPages > 1" class="flex justify-between mt-4">
+            <button @click="prevPage" :disabled="currentPage === 1" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-300">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="nextPage" :disabled="currentPage === totalPages" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-300">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    forumId: null,
+                    forumInfo: null,
+                    posts: [],
+                    currentPage: 1,
+                    perPage: 30,
+                    totalPages: 1
+                };
+            },
+            mounted() {
+                this.forumId = new URLSearchParams(window.location.search).get('id');
+                if (this.forumId) {
+                    this.fetchForum();
+                    this.fetchPosts(this.currentPage);
+                }
+            },
+            methods: {
+                async fetchForum() {
+                    try {
+                        const response = await fetch(`/forum?id=${this.forumId}`);
+                        this.forumInfo = await response.json();
+                        this.totalPages = Math.ceil(this.forumInfo.postNum / this.perPage);
+                    } catch (error) {
+                        console.error('Error fetching forum:', error);
+                    }
+                },
+                async fetchPosts(page) {
+                    try {
+                        const response = await fetch(`/posts_by_forum?forumId=${this.forumId}&page=${page}`);
+                        this.posts = await response.json();
+                        this.currentPage = page;
+                    } catch (error) {
+                        console.error('Error fetching posts:', error);
+                    }
+                },
+                prevPage() {
+                    if (this.currentPage > 1) {
+                        this.fetchPosts(this.currentPage - 1);
+                    }
+                },
+                nextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.fetchPosts(this.currentPage + 1);
+                    }
+                },
+                goToPost(id) {
+                    window.location.href = `/post.html?id=${id}`;
+                },
+                goToWrite() {
+                    window.location.href = `/write.html?forum_id=${this.forumId}`;
+                },
+                formatDate(dateStr) {
+                    const date = new Date(dateStr);
+                    return date.toLocaleString();
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

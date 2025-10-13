@@ -13,8 +13,8 @@ public class User {
     private String email;
     private String selfIntro;
     private String avatarUrl;
-    private Integer phoneNum;
-    private Integer hc_password;
+    private String phoneNum;
+    private Integer hcPassword;
     private Boolean gender;
     private Integer age;
     private Integer fanNum;

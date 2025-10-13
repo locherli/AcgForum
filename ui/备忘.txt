@@ -1,0 +1,3 @@
+cookie字段名：
+    user_id, satoken
+

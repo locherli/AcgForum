@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+    <script src="./js/vue.js"></script>
+    <link href="./css/tailwind.min.css" rel="stylesheet">
+    <script src="./js/utils.js"></script>
+    <style>
+        /* Custom Tailwind config if needed */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <!-- Logo -->
+                <div class="text-2xl font-bold text-blue-600">ForumLogo</div>
+
+                <!-- Back to Home -->
+                <a href="#" @click.prevent="goToHome" class="text-blue-500 hover:underline">Back to Home</a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-md p-8 w-full max-w-md">
+                <!-- Tabs -->
+                <div class="flex border-b mb-6">
+                    <button @click="activeTab = 'login'"
+                        :class="['flex-1 px-4 py-2 -mb-px font-medium', activeTab === 'login' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700']">
+                        Login
+                    </button>
+                    <button @click="activeTab = 'signup'"
+                        :class="['flex-1 px-4 py-2 -mb-px font-medium', activeTab === 'signup' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700']">
+                        Signup
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form v-if="activeTab === 'login'" @submit.prevent="handleLogin">
+                    <div class="mb-4">
+                        <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input v-model="loginForm.email" id="login-email" type="email" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="login-password"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input v-model="loginForm.password" id="login-password" type="password" required minlength="6"
+                            maxlength="32"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login</button>
+                    <p v-if="errorMessage" class="mt-4 text-red-500 text-center">{{ errorMessage }}</p>
+                </form>
+
+                <!-- Signup Form -->
+                <form v-if="activeTab === 'signup'" @submit.prevent="handleSignup">
+                    <div class="mb-4">
+                        <label for="signup-username"
+                            class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <input v-model="signupForm.username" id="signup-username" type="text" required maxlength="32"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input v-model="signupForm.email" id="signup-email" type="email" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="signup-password"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input v-model="signupForm.password" id="signup-password" type="password" required minlength="6"
+                            maxlength="32"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="signup-confirm-password"
+                            class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input v-model="signupForm.confirmPassword" id="signup-confirm-password" type="password"
+                            required minlength="6" maxlength="32"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Signup</button>
+                    <!-- 显示错误信息 -->
+                    <p v-if="errorMessage" class="mt-4 text-red-500 text-center">{{ errorMessage }}</p>
+                    <!-- 显示长度提示信息 (可选) -->
+                    <p v-if="lengthInfo" class="mt-2 text-sm text-gray-500 text-center">{{ lengthInfo }}</p>
+                </form>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-auto">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 ForumSite. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:underline">About Us</a>
+                        <a href="#" class="hover:underline">Terms of Service</a>
+                        <a href="#" class="hover:underline">Privacy Policy</a>
+                        <a href="#" class="hover:underline">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    activeTab: 'login',
+                    loginForm: {
+                        email: '',
+                        password: ''
+                    },
+                    signupForm: {
+                        username: '',
+                        email: '',
+                        password: '',
+                        confirmPassword: ''
+                    },
+                    errorMessage: '',
+                    lengthInfo: '' // 用于显示长度提示
+                };
+            },
+            methods: {
+                // 辅助函数：计算字符串字节长度
+                getByteLength(str) {
+                    // 使用 TextEncoder 获取 UTF-8 字节长度
+                    return new TextEncoder().encode(str).length;
+                },
+
+                async handleLogin() {
+                    this.errorMessage = '';
+                    this.lengthInfo = ''; // 清除之前的提示
+
+                    const passwordByteLength = this.getByteLength(this.loginForm.password);
+
+                    // 前端长度验证
+                    if (passwordByteLength < 6) {
+                        this.errorMessage = '密码长度不能少于 6 个字节';
+                        return;
+                    }
+                    if (passwordByteLength > 32) {
+                        this.errorMessage = '密码长度不能超过 32 个字节';
+                        return;
+                    }
+
+                    try {
+
+                        const formData = new FormData();
+                        formData.append('email', this.loginForm.email);
+                        formData.append('password', this.loginForm.password);
+
+                        const response = await fetch(`/login`, {
+                            method: 'POST',
+                            // 浏览器会自动设置为 'multipart/form-data' 并带上 boundary
+                            body: formData // 使用 FormData 作为请求体
+                        });
+                        const result = await response.json();
+
+                        console.log(result)
+
+                        if (result.code === 200) {
+
+                            // addCookieValue('user_id', result.data.id);
+                            // Redirect to home
+                            window.location.href = '/'; // Assuming homepage is at root
+                        } else {
+                            this.errorMessage = result.message || 'Login failed';
+                        }
+                    } catch (error) {
+                        this.errorMessage = 'An error occurred during login';
+                        console.error('Login error:', error);
+                    }
+                },
+                async handleSignup() {
+                    this.errorMessage = '';
+                    this.lengthInfo = '';
+
+                    const usernameByteLength = this.getByteLength(this.signupForm.username);
+                    const passwordByteLength = this.getByteLength(this.signupForm.password);
+                    const confirmPasswordByteLength = this.getByteLength(this.signupForm.confirmPassword);
+
+                    // 前端长度验证
+                    if (usernameByteLength > 32) {
+                        this.errorMessage = '用户名长度不能超过 32 个字节';
+                        return;
+                    }
+                    if (passwordByteLength < 6) {
+                        this.errorMessage = '密码长度不能少于 6 个字节';
+                        return;
+                    }
+                    if (passwordByteLength > 32) {
+                        this.errorMessage = '密码长度不能超过 32 个字节';
+                        return;
+                    }
+                    if (confirmPasswordByteLength < 6) {
+                        this.errorMessage = '确认密码长度不能少于 6 个字节';
+                        return;
+                    }
+                    if (confirmPasswordByteLength > 32) {
+                        this.errorMessage = '确认密码长度不能超过 32 个字节';
+                        return;
+                    }
+
+                    if (this.signupForm.password !== this.signupForm.confirmPassword) {
+                        this.errorMessage = 'Passwords do not match';
+                        return;
+                    }
+                    try {
+                        const response = await fetch(`/signup`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                userName: this.signupForm.username,
+                                email: this.signupForm.email,
+                                password: this.signupForm.password // 发送原始密码，后端应处理编码
+                            })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Signup successful! Please login.');
+                            this.activeTab = 'login';
+                            this.signupForm = { username: '', email: '', password: '', confirmPassword: '' };
+                        } else {
+                            this.errorMessage = result.message || 'Signup failed';
+                        }
+                    } catch (error) {
+                        this.errorMessage = 'An error occurred during signup';
+                        console.error('Signup error:', error);
+                    }
+                },
+                goToHome() {
+                    window.location.href = '/'; // Redirect to homepage
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

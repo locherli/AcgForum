@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="./css/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-800">
+    <div id="app" class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">Search Results for "{{ keyword }}"</h1>
+        
+        <!-- Nav bar for tabs -->
+        <div class="flex border-b mb-4">
+            <button @click="switchTab('posts')" 
+                    :class="{ 'border-b-2 border-blue-500 text-blue-600': currentTab === 'posts', 'text-gray-500 hover:text-gray-700': currentTab !== 'posts' }" 
+                    class="px-4 py-2 -mb-px font-medium">
+                Posts
+            </button>
+            <button @click="switchTab('users')" 
+                    :class="{ 'border-b-2 border-blue-500 text-blue-600': currentTab === 'users', 'text-gray-500 hover:text-gray-700': currentTab !== 'users' }" 
+                    class="px-4 py-2 -mb-px font-medium">
+                Users
+            </button>
+        </div>
+
+        <!-- Results section -->
+        <div v-if="results.length === 0" class="text-center text-gray-600 mb-8">
+            No results found.
+        </div>
+
+        <!-- Posts results -->
+        <div v-if="currentTab === 'posts' && results.length > 0">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-blue-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Likes</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr v-for="post in results" :key="post.id" class="hover:bg-blue-50 cursor-pointer" @click="goToPost(post.id)">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">{{ post.title }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center">
+                                <img v-if="post.avatarUrl" :src="'uploads/' + post.avatarUrl" alt="Author Avatar" onerror="this.src = '/image/default-avatar.png' " class="w-8 h-8 rounded mr-2">
+                                {{ post.authorName }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(post.date) }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ post.like }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ post.commentsNum }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Users results -->
+        <div v-if="currentTab === 'users' && results.length > 0">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-blue-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Introduction</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fans</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr v-for="user in results" :key="user.id" class="hover:bg-blue-50 cursor-pointer" @click="goToUser(user.id)">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600 flex items-center">
+                                <img :src="'uploads/' + user.avatarUrl" alt="User Avatar" onerror="this.src = '/image/default-avatar.png'" class="w-8 h-8 rounded mr-2">
+                                {{ user.userName }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.selfIntro || 'No introduction available' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.fanNum }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center items-center mt-8" v-if="results.length > 0">
+            <button @click="prevPage" :disabled="currentPage === 1" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded-l disabled:bg-gray-300 disabled:cursor-not-allowed">
+                Prev
+            </button>
+            <span class="px-4 py-2 bg-white border-t border-b border-blue-200">Page {{ currentPage }}</span>
+            <button @click="nextPage" :disabled="!hasMore" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded-r disabled:bg-gray-300 disabled:cursor-not-allowed">
+                Next
+            </button>
+        </div>
+    </div>
+
+    <script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                keyword: '',
+                currentTab: 'posts',
+                currentPage: 1,
+                pageSize: 10,
+                results: [],
+                hasMore: true
+            };
+        },
+        mounted() {
+            const urlParams = new URLSearchParams(window.location.search);
+            this.keyword = urlParams.get('keyword') || '';
+            if (this.keyword) {
+                this.search();
+            }
+        },
+        methods: {
+            switchTab(tab) {
+                this.currentTab = tab;
+                this.currentPage = 1;
+                this.results = [];
+                this.hasMore = true;
+                this.search();
+            },
+            search() {
+                if (this.currentTab === 'posts') {
+                    this.searchPosts();
+                } else {
+                    this.searchUsers();
+                }
+            },
+            async searchPosts() {
+                try {
+                    const response = await fetch(`http://localhost:8080/search_post?keyword=${encodeURIComponent(this.keyword)}&page=${this.currentPage}&size=${this.pageSize}`);
+                    const data = await response.json();
+                    this.results = data;
+                    this.hasMore = data.length === this.pageSize;
+                } catch (error) {
+                    console.error('Error searching posts:', error);
+                }
+            },
+            async searchUsers() {
+                try {
+                    const response = await fetch(`http://localhost:8080/search_user?keyword=${this.keyword}&page=${this.currentPage}&size=${this.pageSize}`);
+                    const data = await response.json();
+                    this.results = data;
+                    this.hasMore = data.length === this.pageSize;
+                } catch (error) {
+                    console.error('Error searching users:', error);
+                }
+            },
+            prevPage() {
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                    this.search();
+                }
+            },
+            nextPage() {
+                if (this.hasMore) {
+                    this.currentPage++;
+                    this.search();
+                }
+            },
+            goToPost(id) {
+                window.location.href = `post.html?id=${id}`;
+            },
+            goToUser(id) {
+                window.location.href = `user.html?id=${id}`;
+            },
+            formatDate(dateStr) {
+                const date = new Date(dateStr);
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const seconds = date.getSeconds().toString().padStart(2, '0');
+                return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+            }
+        }
+    }).mount('#app');
+    </script>
+</body>
+</html>

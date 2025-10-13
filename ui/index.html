@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Homepage</title>
+    <script src="./js/vue.js"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+    <link href="./css/tailwind.min.css" rel="stylesheet">
+    <script src="./js/utils.js"></script>
+    <style>
+        /* Custom Tailwind config if needed */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <!-- Logo -->
+                <div class="text-2xl font-bold text-blue-600">ForumLogo</div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-md mx-8">
+                    <input v-model="searchQuery" @keyup.enter="searchPosts" type="text" placeholder="Search forums..."
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- User Menu -->
+                <div class="relative">
+                    <template v-if="isLoggedIn">
+                        <button @click="toggleUserMenu" class="flex items-center space-x-2">
+                            <img :src=" '/uploads/' + currentUser.avatarUrl"
+                                onerror="this.src = './image/default-avatar.png'" alt="Avatar"
+                                class="w-8 h-8 rounded-lg">
+                            <span>{{ currentUser.name }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div v-if="showUserMenu"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="#" @click="goToProfile"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="#" @click="goToSettings"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" @click="logout"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <button @click="goToLogin"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login/Register</button>
+                    </template>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Left Column: Main Feed -->
+                <div class="lg:w-3/4">
+
+                    <!-- Forum Categories Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div v-for="forum in forums" :key="forum.forumId"
+                            class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                            <a :href="'forum.html?id=' + forum.forumId">
+                                <img :src="forum.icon || '/image/default-icon.png'" alt="Forum Icon"
+                                    class="w-12 h-12 rounded-lg mb-4 mx-auto">
+                                <h3 class="text-lg font-semibold text-center mb-2">{{ forum.forumName }}</h3>
+                                <p class="text-gray-600 text-center mb-4">{{ forum.introduction }}</p>
+                                <div class="flex justify-between text-sm text-gray-500">
+                                    <span>Topics: {{ forum.userNum }}</span>
+                                    <span class="text-green-500">Active</span>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <!-- Category Tabs -->
+                    <div class="flex border-b mb-4">
+                        <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key"
+                            :class="['px-4 py-2 -mb-px font-medium', activeTab === tab.key ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700']">
+                            {{ tab.label }}
+                        </button>
+                    </div>
+
+                    <!-- Recent Activity Feed -->
+                    <div class="space-y-4">
+                        <div v-for="post in currentPosts" :key="post.id"
+                            class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow relative">
+
+                            <a :href="'post.html?id=' + post.id">
+
+
+                                <div v-if="isNewPost(post.date)"
+                                    class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">New
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <img :src=" 'uploads/' + post.avatarUrl"
+                                        onerror="this.src = 'image/default-avatar.png'" alt="Author"
+                                        class="w-8 h-8 rounded-lg mr-3">
+                                    <div>
+                                        <h4 class="font-semibold">{{ post.title }}</h4>
+                                        <span class="text-sm text-gray-500">By {{ post.authorName || 'Author' }} | {{
+                                            formatDate(post.date) }} | {{
+                                            post.commentsNum }} replies</span>
+                                    </div>
+                                </div>
+                                <!-- <p class="text-gray-700 mb-4">{{ post.contentPreview || 'No content preview available' }} -->
+                                </p>
+                                <div class="flex justify-between items-center text-sm text-gray-500">
+                                    <span class="flex items-center"><svg class="w-4 h-4 mr-1" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path
+                                                d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 16a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z">
+                                            </path>
+                                        </svg> {{ post.like }} likes</span>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ post.categoryName ||
+                                        'Category' }}</span>
+                                </div>
+
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <aside class="lg:w-1/4">
+                    <div v-if="isLoggedIn" class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <div class="flex items-center mb-4">
+                            <img :src="'/uploads/' + currentUser.avatarUrl"
+                                onerror="this.src = '/image/default-avatar.png'" alt="User Avatar"
+                                class="w-12 h-12 rounded-lg mr-3">
+                            <div>
+                                <h3 class="font-semibold">{{ currentUser.name }}</h3>
+                                <p class="text-gray-600">{{ currentUser.selfIntro }}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <a href="#" @click="goToProfile" class="block text-blue-500 hover:underline">My Profile</a>
+                            <a href="#" @click="goToWrite" class="block text-blue-500 hover:underline">Write Post</a>
+                            <a href="#" @click="goToBookmarks" class="block text-blue-500 hover:underline">Bookmarks</a>
+                        </div>
+                        <button class="flex items-center w-full justify-center text-red-500 hover:text-red-700">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                </path>
+                            </svg>
+                            Notifications ({{ notificationCount }})
+                        </button>
+                    </div>
+                    <div v-else class="bg-white rounded-lg shadow-md p-6 text-center">
+                        <button @click="goToLogin"
+                            class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 w-full">Login to
+                            Continue</button>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-auto">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 ForumSite. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:underline">About Us</a>
+                        <a href="#" class="hover:underline">Terms of Service</a>
+                        <a href="#" class="hover:underline">Privacy Policy</a>
+                        <a href="#" class="hover:underline">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    currentUser: {},
+                    isLoggedIn: false,
+                    showUserMenu: false,
+                    searchQuery: '',
+                    activeTab: 'latest', // 默认选中 Latest Posts
+                    tabs: [
+                        { key: 'latest', label: 'Latest Posts' },
+                        { key: 'trending', label: 'Trending' },
+                        { key: 'recommend', label: 'Recommend' }, // 新增 Recommend 选项卡
+                    ],
+                    forums: [],
+                    latestPosts: [],
+                    mostLikedPosts: [],
+                    recommendedPosts: [], // 用于存储推荐帖子
+                    searchResults: [],
+                    notificationCount: 3 // Mock
+                };
+            },
+            computed: {
+                currentPosts() {
+                    // 根据 activeTab 返回对应的数据
+                    if (this.activeTab === 'latest') return this.latestPosts;
+                    if (this.activeTab === 'trending') return this.mostLikedPosts;
+                    if (this.activeTab === 'recommend') return this.recommendedPosts; // 新增推荐内容
+                    return this.latestPosts; // 默认返回 latest
+                }
+            },
+            async mounted() {
+                await this.fetchForums();
+                await this.fetchLatestPosts(1);
+                await this.fetchMostLikedPosts(1, 'null');
+                await this.fetchRecommendedPosts(1); // 初始化时加载推荐内容
+                await this.fetchUser();
+                this.checkLogin();
+            },
+            methods: {
+                async fetchForums(page = 1) {
+                    try {
+                        const response = await fetch(`/most_popular_forums?page=${page}`);
+                        const result = await response.json();
+                        this.forums = result || [];
+                    } catch (error) {
+                        console.error('Error fetching forums:', error);
+                    }
+                },
+                async fetchLatestPosts(page = 1) {
+                    try {
+                        const response = await fetch(`/latest_post?page=${page}`);
+                        const result = await response.json();
+                        this.latestPosts = result || [];
+                    } catch (error) {
+                        console.error('Error fetching latest posts:', error);
+                    }
+                },
+                async fetchMostLikedPosts(page = 1, interval = 'null') {
+                    try {
+                        const response = await fetch(`/most_liked_post?page=${page}&interval=${interval}`);
+                        const result = await response.json();
+                        this.mostLikedPosts = result || [];
+                    } catch (error) {
+                        console.error('Error fetching most liked posts:', error);
+                    }
+                },
+                // 新增方法：获取推荐帖子
+                async fetchRecommendedPosts(page = 1) {
+                    try {
+                        const response = await fetch(`/recommend_post?page=${page}`); // 调用 /recommend_post
+                        const result = await response.json();
+                        this.recommendedPosts = result || []; // 更新 recommendedPosts 数据
+                    } catch (error) {
+                        console.error('Error fetching recommended posts:', error);
+                        // 可以在这里添加错误提示逻辑
+                    }
+                },
+                async searchPosts() {
+                    if (this.searchQuery == '') {
+                        showToast('please enter keyword');
+                        return;
+                    }
+
+                    this.searchResults = []; // 清空搜索结果
+                    window.location.href = 'search.html?keyword=' + this.searchQuery;
+
+                },
+                async checkLogin() {
+
+                    try {
+                        const response = await fetch('/is_login');
+                        const result = await response.json();
+                        this.isLoggedIn = result.msg.includes('true'); // Assuming SaResult with code 200 for success
+
+                        if (!this.isLoggedIn) {
+                            clearCookies();
+                        }
+
+                    } catch (error) {
+                        console.error('Error checking login:', error);
+                    }
+
+                },
+                async fetchUser(id) {
+                    try {
+                        const response = await fetch(`/user/myself`);
+                        const result = await response.json();
+                        this.currentUser = result || {};
+                    } catch (error) {
+                        console.error('Error fetching user:', error);
+                    }
+                },
+                async login(credentials) {
+                    try {
+                        const response = await fetch(`/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(credentials)
+                        });
+                        const result = await response.json();
+                        if (result.code === 200) { // Assuming success code
+                            localStorage.setItem('token', result.data.token);
+                            this.isLoggedIn = true;
+                            this.currentUser = result.data;
+                        }
+                    } catch (error) {
+                        console.error('Login error:', error);
+                    }
+                },
+                logout() {
+                    clearCookies();
+                    this.isLoggedIn = false;
+                    this.currentUser = {};
+                    this.showUserMenu = false;
+                },
+                toggleUserMenu() {
+                    this.showUserMenu = !this.showUserMenu;
+                },
+                goToLogin() {
+                    // Redirect to login page, for now alert
+                    // alert('Redirect to login/signup');
+                    window.location.href = 'auth.html';
+                },
+                goToProfile() { window.location.href = 'profile.html' },
+                goToSettings() { alert('Go to settings'); },
+                goToWrite() { window.location.href = 'write.html' },
+                goToBookmarks() { alert('Go to bookmarks'); },
+                formatDate(dateStr) {
+                    return new Date(dateStr).toLocaleDateString();
+                },
+                isNewPost(dateStr) {
+                    const postDate = new Date(dateStr);
+                    const now = new Date();
+                    return (now - postDate) < 24 * 60 * 60 * 1000; // Within 24 hours
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

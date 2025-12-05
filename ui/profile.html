@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <script src="./js/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/utils.js"></script>
     <script>
@@ -234,7 +235,7 @@
                 // Login check (made async)
                 const checkLogin = async () => {
                     try {
-                        const response = await fetch('/is_login');
+                        const response = await fetch('/api/is_login');
                         const result = await response.json();
                         if (!result.msg.includes('true')) {
                             alert('please login first！');
@@ -249,7 +250,7 @@
                 // Fetch user
                 const fetchUser = async () => {
                     try {
-                        const response = await fetch(`/user/myself`);
+                        const response = await fetch(`/api/user/myself`);
                         if (response.ok) {
                             user.value = await response.json();
                         }
@@ -265,7 +266,7 @@
                     }
                     
                     try {
-                        const response = await fetch(`/delete_post?id=${postId}`, {
+                        const response = await fetch(`/api/delete_post?id=${postId}`, {
                             method: 'POST'
                         });
                         if (response.ok) {
@@ -288,7 +289,7 @@
                     }
                     
                     try {
-                        const response = await fetch(`/uncollect_post?userId=${user.value.id}&postId=${postId}`, {
+                        const response = await fetch(`/api/uncollect_post?userId=${user.value.id}&postId=${postId}`, {
                             method: 'POST'
                         });
                         if (response.ok) {
@@ -311,7 +312,7 @@
                     }
                     
                     try {
-                        const response = await fetch(`/unsubscribe_user?myId=${user.value.id}&userId=${userId}`, {
+                        const response = await fetch(`/api/unsubscribe_user?myId=${user.value.id}&userId=${userId}`, {
                             method: 'POST'
                         });
                         if (response.ok) {
@@ -332,7 +333,7 @@
                     if (!hasMorePosts.value || loading.value) return;
                     loading.value = true;
                     try {
-                        const response = await fetch(`/my_posts?page=${postsPage.value}`);
+                        const response = await fetch(`/api/my_posts?page=${postsPage.value}`);
                         if (response.ok) {
                             const data = await response.json();
                             if (Array.isArray(data) && data.length === 0) {
@@ -353,7 +354,7 @@
                     if (!hasMoreCollected.value || loading.value) return;
                     loading.value = true;
                     try {
-                        const response = await fetch(`/my_collected_posts?page=${collectedPage.value}`);
+                        const response = await fetch(`/api/my_collected_posts?page=${collectedPage.value}`);
                         if (response.ok) {
                             const data = await response.json();
                             if (Array.isArray(data) && data.length === 0) {
@@ -374,7 +375,7 @@
                     if (!hasMoreFollowing.value || loading.value) return;
                     loading.value = true;
                     try {
-                        const response = await fetch(`/my_subscribed_users?page=${followingPage.value}`);
+                        const response = await fetch(`/api/my_subscribed_users?page=${followingPage.value}`);
                         if (response.ok) {
                             const data = await response.json();
                             if (Array.isArray(data) && data.length === 0) {
@@ -395,7 +396,7 @@
                     if (!hasMoreFans.value || loading.value) return;
                     loading.value = true;
                     try {
-                        const response = await fetch(`/my_fans?page=${fansPage.value}`);
+                        const response = await fetch(`/api/my_fans?page=${fansPage.value}`);
                         if (response.ok) {
                             const data = await response.json();
                             if (Array.isArray(data) && data.length === 0) {

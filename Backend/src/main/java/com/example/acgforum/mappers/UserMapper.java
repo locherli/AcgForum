@@ -1,6 +1,6 @@
 package com.example.acgforum.mappers;
 
-import com.example.acgforum.tables.User;
+import com.example.acgforum.entity.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;

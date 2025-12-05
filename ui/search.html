@@ -136,7 +136,7 @@
             },
             async searchPosts() {
                 try {
-                    const response = await fetch(`http://localhost:8080/search_post?keyword=${encodeURIComponent(this.keyword)}&page=${this.currentPage}&size=${this.pageSize}`);
+                    const response = await fetch(`/api/search_post?keyword=${encodeURIComponent(this.keyword)}&page=${this.currentPage}&size=${this.pageSize}`);
                     const data = await response.json();
                     this.results = data;
                     this.hasMore = data.length === this.pageSize;
@@ -146,7 +146,7 @@
             },
             async searchUsers() {
                 try {
-                    const response = await fetch(`http://localhost:8080/search_user?keyword=${this.keyword}&page=${this.currentPage}&size=${this.pageSize}`);
+                    const response = await fetch(`/api/search_user?keyword=${this.keyword}&page=${this.currentPage}&size=${this.pageSize}`);
                     const data = await response.json();
                     this.results = data;
                     this.hasMore = data.length === this.pageSize;

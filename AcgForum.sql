@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS user_info
     gender      BOOLEAN,
     age         INT,
     self_intro  TEXT DEFAULT '暂无简介',
-    avatar      VARCHAR(50)
+    avatar      VARCHAR(50),
     INDEX (userName),
     INDEX (email),
     INDEX user_name_hc_password (userName, hc_password),
@@ -102,6 +102,19 @@ CREATE TABLE IF NOT EXISTS forum_member
     user  INT NOT NULL,
     INDEX (forum),
     INDEX (user)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS chat_message
+(
+    id        INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    sender    INT NOT NULL,
+    receiver  INT NOT NULL,
+    content   TEXT NOT NULL,
+    date      DATETIME NOT NULL,
+    is_read   BOOLEAN DEFAULT FALSE,
+    INDEX (receiver),
+    INDEX (sender),
+    INDEX (is_read)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Views

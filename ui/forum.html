@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
-    <script src="./js/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,7 +25,7 @@
         <!-- Forum Information -->
         <div v-if="forumInfo" class="bg-white shadow-md rounded-lg p-6 mb-6 border border-blue-200">
             <div class="flex items-center mb-4">
-                <img v-if="forumInfo.icon" :src="forumInfo.icon" alt="Forum Icon" class="w-16 h-16 rounded-full mr-4">
+                <img v-if="forumInfo.icon" :src="forumInfo.icon" alt="Forum Icon" class="w-16 h-16 rounded-full mr-4" onerror="this.src = '/image/default-icon.png'">
                 <div>
                     <h1 class="text-3xl font-bold text-primary">{{ forumInfo.name }}</h1>
                     <p class="text-gray-600">{{ forumInfo.introduction }}</p>
@@ -57,7 +58,7 @@
                     <tr v-for="post in posts" :key="post.id" class="hover:bg-blue-50 cursor-pointer" @click="goToPost(post.id)">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">{{ post.title }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center">
-                            <img v-if="post.avatarUrl" :src="'/uploads/' + post.avatarUrl" alt="Author Avatar" class="w-6 h-6 rounded mr-2">
+                            <img v-if="post.avatarUrl" :src="'/uploads/' + post.avatarUrl" alt="Author Avatar" class="w-6 h-6 rounded mr-2" onerror="this.src = '/image/default-avatar.png'">
                             {{ post.authorName }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(post.date) }}</td>
@@ -102,7 +103,7 @@
             methods: {
                 async fetchForum() {
                     try {
-                        const response = await fetch(`/forum?id=${this.forumId}`);
+                        const response = await fetch(`/api/forum?id=${this.forumId}`);
                         this.forumInfo = await response.json();
                         this.totalPages = Math.ceil(this.forumInfo.postNum / this.perPage);
                     } catch (error) {
@@ -111,7 +112,7 @@
                 },
                 async fetchPosts(page) {
                     try {
-                        const response = await fetch(`/posts_by_forum?forumId=${this.forumId}&page=${page}`);
+                        const response = await fetch(`/api/posts_by_forum?forumId=${this.forumId}&page=${page}`);
                         this.posts = await response.json();
                         this.currentPage = page;
                     } catch (error) {
@@ -129,10 +130,10 @@
                     }
                 },
                 goToPost(id) {
-                    window.location.href = `/post.html?id=${id}`;
+                    window.location.href = `post.html?id=${id}`;
                 },
                 goToWrite() {
-                    window.location.href = `/write.html?forum_id=${this.forumId}`;
+                    window.location.href = `write.html?forum_id=${this.forumId}`;
                 },
                 formatDate(dateStr) {
                     const date = new Date(dateStr);

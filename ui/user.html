@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="js/utils.js"></script>
     <style>
         body {
             background-color: #ffffff;
@@ -148,6 +149,12 @@
                 <button v-if="!isMe" class="follow-button" @click="toggleFollow">
                     {{ isFollowing ? 'Unfollow' : 'Follow' }}
                 </button>
+
+                <span style="width: 20px;"></span>
+
+                <button v-if="!isMe" class="follow-button" @click="goToChat">
+                    Chat
+                </button>
             </div>
             <div class="posts-list">
                 <h3>Posts</h3>
@@ -206,16 +213,16 @@
                 }
 
                 // Fetch current user
-                const meRes = await fetch('/user/myself');
+                const meRes = await fetch('/api/user/myself');
                 this.me = await meRes.json();
                 this.isMe = this.me.id == id;
 
                 // Fetch target user
-                const userRes = await fetch(`/user?id=${id}`);
+                const userRes = await fetch(`/api/user?id=${id}`);
                 this.user = await userRes.json();
 
                 // Fetch posts
-                const postsRes = await fetch(`/posts_by_author?authorId=${id}`);
+                const postsRes = await fetch(`/api/posts_by_author?authorId=${id}`);
                 this.allPosts = await postsRes.json();
 
                 // Check if following (if not me)
@@ -227,7 +234,7 @@
                 async checkFollowing(targetId) {
                     let page = 1;
                     while (true) {
-                        const res = await fetch(`/my_subscribed_users?page=${page}`);
+                        const res = await fetch(`/api/my_subscribed_users?page=${page}`);
                         const users = await res.json();
                         if (users.length === 0) {
                             break;
@@ -243,15 +250,22 @@
                     const id = this.user.id;
                     if (this.isFollowing) {
                         // Unsubscribe
-                        await fetch(`/unsubscribe_user?myId=${this.me.id}&userId=${id}`, { method: 'POST' });
+                        await fetch(`/api/unsubscribe_user?myId=${this.me.id}&userId=${id}`, { method: 'POST' });
                         this.isFollowing = false;
                         this.user.fanNum--;
                     } else {
                         // Subscribe
-                        await fetch(`/subscribe_user?userId=${id}`, { method: 'POST' });
+                        await fetch(`/api/subscribe_user?userId=${id}`, { method: 'POST' });
                         this.isFollowing = true;
                         this.user.fanNum++;
                     }
+                },
+                goToChat() {
+                    if (getCookieValue('satoken') == undefined) {
+                        showToast('Please log in first');
+                        return;
+                     }
+                    window.location.href = `chat.html?receiver=${this.user.id}`;
                 },
                 goToPost(postId) {
                     window.location.href = `post.html?id=${postId}`;

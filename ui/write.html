@@ -200,7 +200,7 @@
                     formData.append('content', this.content);
                     formData.append('forumId', this.forumId);
 
-                    fetch('/put_post', {
+                    fetch('/api/put_post', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'

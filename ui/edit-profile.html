@@ -121,11 +121,11 @@
                     this.showUserMenu = !this.showUserMenu;
                 },
                 async logout() {
-                    await fetch('/logout', { method: 'GET' });
+                    await fetch('/api/logout', { method: 'GET' });
                     window.location.href = '/';
                 },
                 async fetchUserData() {
-                    const response = await fetch('/user/myself');
+                    const response = await fetch('/api/user/myself');
                     const data = await response.json();
 
                     this.user = {
@@ -145,7 +145,7 @@
                         gender: this.user.gender.toString(),
                         age: this.user.age.toString()
                     });
-                    const response = await fetch(`/alter_user_info?${params}`, { method: 'POST' });
+                    const response = await fetch(`/api/alter_user_info?${params}`, { method: 'POST' });
                     const result = await response.json();
                     console.log(result)
                     if (result.success == false) { showToast('请先登录'); }
@@ -160,7 +160,7 @@
                     if (!this.avatarFile) return;
                     const formData = new FormData();
                     formData.append('avatarFile', this.avatarFile);
-                    await fetch('/change_avatar', { method: 'POST', body: formData });
+                    await fetch('/api/change_avatar', { method: 'POST', body: formData });
                     alert('Avatar updated successfully!');
                     this.avatarFile = null;
                     this.previewUrl = null;

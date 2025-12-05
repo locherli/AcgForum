@@ -1,5 +1,12 @@
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\AcgForumApplication.java
-D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\GlobalController.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\config\WebSocketConfig.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\controller\ChatController.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\controller\GlobalController.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\entity\ChatMessage.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\entity\Forum.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\entity\Post.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\entity\User.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\ChatMapper.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\ForumMapper.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\PostMapper.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\UserMapper.java
@@ -8,6 +15,4 @@ D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\Re
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnPost.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnSimplePost.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnUser.java
-D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\tables\Forum.java
-D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\tables\Post.java
-D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\tables\User.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\util\ChatUtil.java

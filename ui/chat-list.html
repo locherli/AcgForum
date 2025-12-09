@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recent Contacts</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        :root {
+            --primary-blue: #3b82f6; /* 蓝色按钮/高亮色 */
+            --bg-color: #f8f9fa;      /* 浅色背景 */
+            --white: #ffffff;
+            --text-main: #333333;
+            --text-sub: #888888;
+            --danger-red: #ff4d4f;    /* 红点颜色 */
+            --border-color: #e9ecef;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            background-color: var(--white);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* 列表容器 */
+        .chat-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        /* 列表项 */
+        .chat-item {
+            background-color: var(--white);
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-item:hover {
+            background-color: #f0f7ff; /* 悬停时淡淡的蓝色 */
+        }
+
+        /* 头像区域 */
+        .avatar-container {
+            position: relative;
+            margin-right: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        /* 红点标记 */
+        .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: var(--danger-red);
+            color: white;
+            font-size: 12px;
+            min-width: 18px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 9px;
+            padding: 0 4px;
+            border: 2px solid var(--white);
+            box-sizing: border-box;
+        }
+
+        /* 信息区域 */
+        .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .time {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        /* 消息预览 (这里用 latestMessage 字段) */
+        .preview {
+            font-size: 14px;
+            color: var(--text-sub);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 加载中/空状态 */
+        .status-msg {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="header">
+        <h2>消息列表</h2>
+        <!-- 示例：蓝色的操作按钮（如有需要） -->
+        <!-- <button style="background: var(--primary-blue); color: white; border: none; padding: 5px 10px; border-radius: 4px;">新建</button> -->
+    </div>
+
+    <div v-if="loading" class="status-msg">加载中...</div>
+    
+    <div v-else-if="contacts.length === 0" class="status-msg">
+        暂无最近联系人
+    </div>
+
+    <ul v-else class="chat-list">
+        <li v-for="contact in contacts" :key="contact.id" class="chat-item" @click="goToChat(contact.id)">
+            <!-- 头像部分 -->
+            <div class="avatar-container">
+                <img 
+                    :src="getAvatarUrl(contact.avatar)" 
+                    @error="handleImageError"
+                    class="avatar" 
+                    alt="头像"
+                >
+                <!-- 红点：当 messageCount > 0 时显示 -->
+                <span v-if="contact.messageCount > 0" class="badge">
+                    {{ contact.messageCount > 99 ? '99+' : contact.messageCount }}
+                </span>
+            </div>
+
+            <!-- 内容部分 -->
+            <div class="info">
+                <div class="top-row">
+                    <span class="name">{{ contact.name }}</span>
+                    <!-- 格式化时间 -->
+                    <span class="time">{{ formatTime(contact.latestMessage) }}</span>
+                </div>
+                <!-- 显示最后一条消息的内容或时间 -->
+                <div class="preview">
+                    {{ contact.latestMessage || '暂无消息' }}
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script>
+    const { createApp, ref, onMounted } = Vue;
+
+    createApp({
+        setup() {
+            const contacts = ref([]);
+            const loading = ref(true);
+            const defaultAvatar = '/image/default-avatar.png';
+
+            // 获取联系人列表
+            const fetchContacts = async () => {
+                try {
+                    const response = await fetch('/api/chat/recentContacts');
+                    if (response.ok) {
+                        const data = await response.json();
+                        contacts.value = data;
+                    } else {
+                        console.error('获取联系人失败');
+                    }
+                } catch (error) {
+                    console.error('网络错误:', error);
+                } finally {
+                    loading.value = false;
+                }
+            };
+
+            // 跳转到聊天页面
+            const goToChat = (id) => {
+                window.location.href = `chat.html?receiver=${id}`;
+            };
+
+            // 获取头像 URL 逻辑
+            const getAvatarUrl = (avatarPath) => {
+                if (!avatarPath) return defaultAvatar;
+                // 确保路径不重复斜杠
+                return `/uploads/${avatarPath.replace(/^\//, '')}`;
+            };
+
+            // 图片加载失败时的回退处理
+            const handleImageError = (e) => {
+                e.target.src = defaultAvatar;
+            };
+
+            // 简单的时间格式化 (把 ISO 字符串转得更好看一点)
+            const formatTime = (timeStr) => {
+                if (!timeStr) return '';
+                const date = new Date(timeStr);
+                // 检查日期是否有效
+                if (isNaN(date.getTime())) return timeStr;
+
+                const now = new Date();
+                const isToday = date.toDateString() === now.toDateString();
+
+                // 补零函数
+                const pad = (n) => n < 10 ? '0' + n : n;
+
+                if (isToday) {
+                    // 如果是今天，显示 HH:mm
+                    return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+                } else {
+                    // 如果不是今天，显示 MM-DD
+                    return `${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+                }
+            };
+
+            onMounted(() => {
+                fetchContacts();
+            });
+
+            return {
+                contacts,
+                loading,
+                goToChat,
+                getAvatarUrl,
+                handleImageError,
+                formatTime
+            };
+        }
+    }).mount('#app');
+</script>
+
+</body>
+</html>

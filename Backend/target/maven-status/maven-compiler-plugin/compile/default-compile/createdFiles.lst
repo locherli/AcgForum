@@ -11,6 +11,7 @@ com\example\acgforum\ReturnFormat\ReturnPost.class
 com\example\acgforum\entity\Post.class
 com\example\acgforum\mappers\ChatMapper.class
 com\example\acgforum\controller\GlobalController.class
+com\example\acgforum\ReturnFormat\ReturnContact.class
 com\example\acgforum\config\WebSocketConfig.class
 com\example\acgforum\util\ChatUtil.class
 com\example\acgforum\ReturnFormat\ReturnComment.class

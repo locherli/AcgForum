@@ -5,45 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c868c27-d4b5-40ef-a442-b5bb341e4f77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/config/WebSocketConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/controller/ChatController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/entity/ChatMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ChatMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/util/ChatUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AcgForum.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../AcgForum.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/ReturnFormat/ReturnContact.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/AcgForumApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/AcgForumApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/GlobalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/controller/GlobalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ForumMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ForumMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/PostMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Forum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/entity/Forum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/tables/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/controller/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/controller/GlobalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/controller/GlobalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ChatMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/acgforum/mappers/ChatMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/acgforum/AcgForumApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Backend-0.0.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/Backend-0.0.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Backend-0.0.1.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/Backend-0.0.1.jar.original" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/AcgForumApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/AcgForumApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/GlobalController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/ForumMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/ForumMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/PostMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/PostMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/UserMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Forum.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/Post.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/tables/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/example/acgforum/AcgForumApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/example/acgforum/AcgForumApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/controller/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/controller/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/controller/GlobalController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/ChatMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/acgforum/mappers/ChatMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2025-12-05T12-21-44_308.dumpstream" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/auth.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/auth.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/chat.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/edit-profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/edit-profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/forum.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/forum.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/post.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/post.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/uploads/ba62bad9-5c1d-42be-bfe8-9b07c57e1dad_9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/uploads/e51b8beb-3db2-4f54-b57f-d6fdd3018419_6.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/user.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/write.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/write.html" afterDir="false" />
     </list>

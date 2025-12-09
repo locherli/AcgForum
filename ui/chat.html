@@ -1,3 +1,4 @@
+<!-- START OF FILE chat.html -->
 <!DOCTYPE html>
 <html lang="zh">
 
@@ -8,160 +9,44 @@
     <script src="js/utils.js"></script>
     <script src="js/config.js"></script>
     <!-- 引入 Vue 3 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./js/vue.js"></script>
+
     <style>
-        /* --- 原有基础样式保持不变 --- */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            color: #333;
-        }
-
-        header {
-            background-color: #ffffff;
-            padding: 10px 15px;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        /* 新增：头部头像样式 */
-        .header-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 10%;
-            margin-right: 10px;
-            object-fit: cover;
-            border: 1px solid #e0e0e0;
-        }
-
-        #chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 修改：为了包裹时间和气泡，增加一个包装层，继承原有的对齐逻辑 */
-        .message-wrapper {
-            max-width: 70%;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .wrapper-sent {
-            align-self: flex-end;
-            align-items: flex-end;
-            /* 让气泡和时间都靠右 */
-        }
-
-        .wrapper-received {
-            align-self: flex-start;
-            align-items: flex-start;
-            /* 让气泡和时间都靠左 */
-        }
-
-        /* 原 .message 样式保留，主要负责气泡外观 */
-        .message {
-            padding: 10px 15px;
-            border-radius: 20px;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .sent {
-            background-color: #007bff;
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .received {
-            background-color: #ffffff;
-            color: #333;
-            border: 1px solid #e0e0e0;
-            border-bottom-left-radius: 5px;
-        }
-
-        /* 新增：时间文本样式 */
-        .time-text {
-            font-size: 12px;
-            color: #999;
-            margin-top: 4px;
-            padding: 0 5px;
-        }
-
-        #input-container {
-            background-color: #ffffff;
-            padding: 10px;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-        }
-
-        #message-input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
-            font-size: 16px;
-            margin-right: 10px;
-            outline: none;
-        }
-
-        #send-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        #send-button:hover {
-            background-color: #0056b3;
-        }
-
-        #send-button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        /* 防止 Vue 加载前的闪烁 */
-        [v-cloak] {
-            display: none;
-        }
+        /* --- 样式保持不变 --- */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; color: #333; }
+        header { background-color: #ffffff; padding: 10px 15px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; font-size: 18px; font-weight: 500; }
+        .header-avatar { width: 32px; height: 32px; border-radius: 10%; margin-right: 10px; object-fit: cover; border: 1px solid #e0e0e0; }
+        #chat-container { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; }
+        .message-wrapper { max-width: 70%; margin-bottom: 15px; display: flex; flex-direction: column; }
+        .wrapper-sent { align-self: flex-end; align-items: flex-end; }
+        .wrapper-received { align-self: flex-start; align-items: flex-start; }
+        .message { padding: 10px 15px; border-radius: 20px; line-height: 1.4; word-wrap: break-word; }
+        .sent { background-color: #007bff; color: white; border-bottom-right-radius: 5px; }
+        .received { background-color: #ffffff; color: #333; border: 1px solid #e0e0e0; border-bottom-left-radius: 5px; }
+        .time-text { font-size: 12px; color: #999; margin-top: 4px; padding: 0 5px; }
+        #input-container { background-color: #ffffff; padding: 10px; border-top: 1px solid #e0e0e0; display: flex; align-items: center; }
+        #message-input { flex: 1; padding: 10px 15px; border: 1px solid #e0e0e0; border-radius: 20px; font-size: 16px; margin-right: 10px; outline: none; }
+        #send-button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; }
+        #send-button:hover { background-color: #0056b3; }
+        #send-button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        [v-cloak] { display: none; }
     </style>
 </head>
 
 <body>
     <div id="app" v-cloak style="display: flex; flex-direction: column; height: 100%;">
         <header>
-            <!-- 显示头像和名字 -->
             <img :src="'/uploads/' + userInfo.avatarUrl" class="header-avatar" alt="avatar"
                 onerror="this.src = './image/default-avatar.png'">
             <span>{{ headerTitle }}</span>
         </header>
 
         <div id="chat-container" ref="chatContainer">
-            <!-- 循环渲染消息 -->
             <div v-for="(msg, index) in messages" :key="index" class="message-wrapper"
                 :class="msg.type === 'sent' ? 'wrapper-sent' : 'wrapper-received'">
-
                 <div class="message" :class="msg.type">
                     {{ msg.content }}
                 </div>
-                <!-- 显示时间 -->
                 <div class="time-text">{{ formatTime(msg.date) }}</div>
             </div>
         </div>
@@ -174,7 +59,83 @@
             </button>
         </div>
     </div>
-<script>
+    <script>
+        // ---在此处定义 ChatProtocol 工具类，避免文件引用错误---
+        const ChatProtocol = {
+            VERSION: 1,
+            TYPE_HANDSHAKE: 0,
+            TYPE_MESSAGE: 1,
+            TOKEN_LENGTH: 36,
+            HEADER_LENGTH: 1 + 1 + 36 + 4 + 4, // 46 bytes
+
+            pack(type, token, targetId, content) {
+                const payloadBytes = new TextEncoder().encode(content || '');
+                const len = payloadBytes.length;
+
+                let tokenBytes = new TextEncoder().encode(token || '');
+                if (tokenBytes.length !== this.TOKEN_LENGTH) {
+                    const fixedToken = new Uint8Array(this.TOKEN_LENGTH);
+                    fixedToken.fill(0);
+                    fixedToken.set(tokenBytes.slice(0, this.TOKEN_LENGTH));
+                    tokenBytes = fixedToken;
+                }
+
+                const buffer = new ArrayBuffer(this.HEADER_LENGTH + len);
+                const view = new DataView(buffer);
+                let offset = 0;
+
+                view.setUint8(offset++, this.VERSION);
+                view.setUint8(offset++, type);
+                new Uint8Array(buffer, offset, this.TOKEN_LENGTH).set(tokenBytes);
+                offset += this.TOKEN_LENGTH;
+                view.setInt32(offset, targetId);
+                offset += 4;
+                view.setInt32(offset, len);
+                offset += 4;
+                if (len > 0) {
+                    new Uint8Array(buffer, offset, len).set(payloadBytes);
+                }
+                return buffer;
+            },
+
+            unpack(data) {
+                let buffer = data;
+                if (data instanceof Uint8Array) {
+                    buffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+                }
+
+                if (buffer.byteLength < this.HEADER_LENGTH) return null;
+
+                const view = new DataView(buffer);
+                let offset = 0;
+
+                const ver = view.getUint8(offset++);
+                const type = view.getUint8(offset++);
+                const tokenBytes = new Uint8Array(buffer, offset, this.TOKEN_LENGTH);
+                offset += this.TOKEN_LENGTH;
+                const senderId = view.getInt32(offset);
+                offset += 4;
+                const len = view.getInt32(offset);
+                offset += 4;
+
+                if (buffer.byteLength - offset < len) return null;
+
+                const payloadBytes = new Uint8Array(buffer, offset, len);
+                const content = new TextDecoder('utf-8').decode(payloadBytes);
+                const tokenStr = new TextDecoder('utf-8').decode(tokenBytes).replace(/\0/g, '');
+
+                return { ver, type, token: tokenStr, senderId, content };
+            },
+
+            createHandshake(token) {
+                return this.pack(this.TYPE_HANDSHAKE, token, 0, '');
+            },
+
+            createMessage(token, receiverId, content) {
+                return this.pack(this.TYPE_MESSAGE, token, receiverId, content);
+            }
+        };
+
         const { createApp } = Vue;
 
         createApp({
@@ -184,31 +145,26 @@
                     satoken: '',
                     wsUrl: '',
                     socket: null,
-                    isConnected: false, // 新增：用于Vue响应式追踪连接状态
-                    messages: [], 
+                    isConnected: false,
+                    messages: [],
                     inputMessage: '',
-                    userInfo: {
-                        name: '',
-                        avatarUrl: ''
-                    }
+                    userInfo: { name: '', avatarUrl: '' }
                 };
             },
             computed: {
                 canSend() {
-                    // 修改：依赖 isConnected 变量
                     return this.satoken && this.receiverId > 0 && this.isConnected;
                 },
                 headerTitle() {
-                    if (this.userInfo.name) {
-                        return this.userInfo.name;
-                    }
+                    if (this.userInfo.name) return this.userInfo.name;
                     return this.receiverId > 0 ? `与用户 ${this.receiverId} 聊天` : '聊天中...';
                 }
             },
             created() {
                 this.receiverId = parseInt(getUrlParam(window.location.href, 'receiver')) || 0;
                 this.satoken = getCookieValue('satoken') || '';
-                this.wsUrl = `ws://forum.041130.xyz/api/chat`;
+                // this.wsUrl = `ws://forum.041130.xyz/api/chat`;
+                this.wsUrl = `ws://localhost:8080/api/chat`;
 
                 if (!this.satoken) {
                     showToast('未找到satoken，请登录后重试');
@@ -224,91 +180,78 @@
                 fetchUserInfo() {
                     const url = `/api/user?id=${this.receiverId}`;
                     fetch(url)
-                    .then(res => res.ok ? res.json() : Promise.reject('获取用户信息失败'))
-                    .then(data => {
-                        this.userInfo = data;
-                    })
-                    .catch(console.error);
+                        .then(res => res.ok ? res.json() : Promise.reject('获取用户信息失败'))
+                        .then(data => { this.userInfo = data; })
+                        .catch(console.error);
+                },
+
+                sendHandshake() {
+                    if (!this.satoken || !this.socket || this.socket.readyState !== WebSocket.OPEN) return;
+                    
+                    const buffer = ChatProtocol.createHandshake(this.satoken);
+                    
+                    this.socket.send(buffer);
+                    console.log('WebSocket handshake sent.');
                 },
 
                 fetchHistory() {
                     const url = `/api/chat/history_message?userId=${this.receiverId}`;
-                    fetch(url, {
-                        headers: { 'satoken': this.satoken }
-                    })
-                    .then(res => res.ok ? res.json() : Promise.reject('获取历史消息失败'))
-                    .then(data => {
-                        if (Array.isArray(data)) {
-                            data.forEach(msg => {
-                                const type = (msg.sender === this.receiverId) ? 'received' : 'sent';
-                                this.appendMessage(msg.content, type, msg.date);
-                            });
-                        }
-                    })
-                    .catch(console.error);
+                    fetch(url, { headers: { 'satoken': this.satoken } })
+                        .then(res => res.ok ? res.json() : Promise.reject('获取历史消息失败'))
+                        .then(data => {
+                            if (Array.isArray(data)) {
+                                data.forEach(msg => {
+                                    const type = (msg.sender === this.receiverId) ? 'received' : 'sent';
+                                    this.appendMessage(msg.content, type, msg.date);
+                                });
+                            }
+                        })
+                        .catch(console.error);
                 },
 
                 connectWebSocket() {
                     console.log('Connecting to:', this.wsUrl);
-                    // 防止重复连接
-                    if(this.socket) {
-                        this.socket.close();
-                    }
-                    
+                    if (this.socket) this.socket.close();
+
                     this.socket = new WebSocket(this.wsUrl);
                     this.socket.binaryType = "arraybuffer";
 
                     this.socket.onopen = () => {
                         console.log('WebSocket已连接');
-                        this.isConnected = true; // 更新状态
+                        this.isConnected = true;
+                        this.sendHandshake();
                     };
-                    
+
                     this.socket.onmessage = (event) => {
                         if (event.data instanceof Blob) {
                             event.data.arrayBuffer().then(buffer => {
-                                this.handleBinaryMessage(new Uint8Array(buffer));
+                                this.handleBinaryMessage(buffer);
                             });
                         } else {
-                            this.handleBinaryMessage(new Uint8Array(event.data));
+                            this.handleBinaryMessage(event.data);
                         }
                     };
 
                     this.socket.onclose = () => {
                         console.log('WebSocket已关闭，3秒后重连');
-                        this.isConnected = false; // 更新状态
+                        this.isConnected = false;
                         setTimeout(this.connectWebSocket, 3000);
                     };
 
                     this.socket.onerror = (err) => {
                         console.error('WebSocket错误', err);
-                        this.isConnected = false; // 更新状态
+                        this.isConnected = false;
                     };
                 },
 
                 handleBinaryMessage(data) {
-                    if (data.length < 1 + 1 + 36 + 4 + 4) return;
+                    const packet = ChatProtocol.unpack(data);
 
-                    let offset = 0;
-                    const ver = data[offset++];
-                    const type = data[offset++];
-                    const tokenBytes = data.slice(offset, offset + 36);
-                    offset += 36;
-                    const senderId = (data[offset] << 24) | (data[offset+1] << 16) | (data[offset+2] << 8) | data[offset+3];
-                    offset += 4;
-                    const len = (data[offset] << 24) | (data[offset+1] << 16) | (data[offset+2] << 8) | data[offset+3];
-                    offset += 4;
-                    
-                    if (data.length - offset < len) return;
+                    if (!packet) return;
+                    if (packet.ver !== ChatProtocol.VERSION || packet.type !== ChatProtocol.TYPE_MESSAGE) return;
 
-                    const payloadBytes = data.slice(offset, offset + len);
-                    const payload = new TextDecoder('utf-8').decode(payloadBytes);
-
-                    if (ver !== 1 || type !== 1) return;
-
-                    const tokenStr = new TextDecoder('utf-8').decode(tokenBytes).trim();
-                    
-                    if ((tokenStr === '' || tokenStr.replace(/\0/g, '') === '') && senderId === this.receiverId) {
-                        this.appendMessage(payload, 'received');
+                    if (packet.senderId === this.receiverId) {
+                        this.appendMessage(packet.content, 'received');
                     }
                 },
 
@@ -316,34 +259,10 @@
                     const text = this.inputMessage.trim();
                     if (!text || !this.canSend) return;
 
-                    const ver = 1;
-                    const type = 1;
-                    let tokenBytes = new TextEncoder().encode(this.satoken);
-                    if (tokenBytes.length !== 36) {
-                        const fixedToken = new Uint8Array(36);
-                        fixedToken.fill(0);
-                        fixedToken.set(tokenBytes.slice(0, 36));
-                        tokenBytes = fixedToken;
-                    }
-                    const payloadBytes = new TextEncoder().encode(text);
-                    const len = payloadBytes.length;
-
-                    const buffer = new ArrayBuffer(1 + 1 + 36 + 4 + 4 + len);
-                    const view = new DataView(buffer);
-                    let offset = 0;
-
-                    view.setUint8(offset++, ver);
-                    view.setUint8(offset++, type);
-                    new Uint8Array(buffer, offset, 36).set(tokenBytes);
-                    offset += 36;
-                    view.setInt32(offset, this.receiverId);
-                    offset += 4;
-                    view.setInt32(offset, len);
-                    offset += 4;
-                    new Uint8Array(buffer, offset, len).set(payloadBytes);
+                    const buffer = ChatProtocol.createMessage(this.satoken, this.receiverId, text);
 
                     this.socket.send(buffer);
-                    
+
                     this.appendMessage(text, 'sent');
                     this.inputMessage = '';
                 },
@@ -361,17 +280,12 @@
                         type: type,
                         date: dateStr ? new Date(dateStr) : new Date()
                     });
-                    
-                    this.$nextTick(() => {
-                        this.scrollToBottom();
-                    });
+                    this.$nextTick(() => { this.scrollToBottom(); });
                 },
 
                 scrollToBottom() {
                     const container = this.$refs.chatContainer;
-                    if (container) {
-                        container.scrollTop = container.scrollHeight;
-                    }
+                    if (container) container.scrollTop = container.scrollHeight;
                 },
 
                 formatTime(dateInput) {
@@ -379,12 +293,8 @@
                     const date = new Date(dateInput);
                     const hours = date.getHours().toString().padStart(2, '0');
                     const minutes = date.getMinutes().toString().padStart(2, '0');
-                    
                     const now = new Date();
-                    const isToday = date.getDate() === now.getDate() && 
-                                    date.getMonth() === now.getMonth() && 
-                                    date.getFullYear() === now.getFullYear();
-                    
+                    const isToday = date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
                     if (!isToday) {
                         const month = (date.getMonth() + 1).toString().padStart(2, '0');
                         const day = date.getDate().toString().padStart(2, '0');
@@ -396,5 +306,4 @@
         }).mount('#app');
     </script>
 </body>
-
 </html>

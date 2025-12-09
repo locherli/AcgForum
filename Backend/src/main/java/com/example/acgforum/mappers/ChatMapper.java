@@ -3,6 +3,7 @@ package com.example.acgforum.mappers;
 import com.example.acgforum.entity.ChatMessage;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -16,6 +17,21 @@ public interface ChatMapper {
             "VALUES(#{sender}, #{receiver}, #{content}, #{date}, #{isRead})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(ChatMessage chatMessage);
+
+    /**
+     *  取联系人未读消息的数量
+     */
+    @Select("SELECT COUNT(*) FROM chat_message WHERE receiver = #{userId} AND sender = ${contactId} AND is_read = false")
+    int countUnreadMessage(Integer userId, Integer contactId);
+
+    /*
+     *  取最近一次消息的时间
+     */
+    @Select("SELECT MAX(date) " +
+            "FROM chat_message " +
+            "WHERE (sender = #{userId} AND receiver = #{contactId}) " +
+            "OR (sender = #{contactId} AND receiver = #{userId});")
+    LocalDateTime latestMessageTime(Integer userId, Integer contactId);
 
     /**
      * 查询两个用户之间的聊天记录

@@ -82,23 +82,37 @@ public class ChatController {
             return;
         }
 
-        // 假设 type=1 为发送消息
-        if (msg.type == 1) {
-            String loginIdStr = (String) StpUtil.getLoginIdByToken(msg.satoken);
-            int senderId = Integer.parseInt(loginIdStr);
-            if (senderId <= 0) {
-                logger.warn("[websocket] 无效的 satoken：id={}", session.getId());
-                return;
-            }
+        String loginIdStr = (String) StpUtil.getLoginIdByToken(msg.satoken);
+        int senderId = 0;
+        try {
+            senderId = Integer.parseInt(loginIdStr);
+        } catch (NumberFormatException e) {
+            logger.warn("[websocket] 无效的 satoken 或 loginId：id={}, satoken={}", session.getId(), msg.satoken);
+            return;
+        }
 
-            // 关联 session 与 userId
-            onlineUsers.put(senderId, session);
-            userBySession.put(session, senderId);
+        if (senderId <= 0) {
+            logger.warn("[websocket] 无效的 satoken：id={}", session.getId());
+            return;
+        }
+
+        // 关联 session 与 userId，确保发送方/连接方上线
+        onlineUsers.put(senderId, session);
+        userBySession.put(session, senderId);
+        logger.info("[websocket] 用户已注册/更新在线状态：senderId={}", senderId);
+
+        // type=0 为握手/注册，type=1 为发送消息
+        if (msg.type == 0) {
+            // type 0 仅用于注册在线状态，无需后续处理
+            return;
+        }
+
+        if (msg.type == 1) {
 
             // 存储消息到数据库
             ChatMessage chatMessage = new ChatMessage();
 
-            chatMessage.setSender(senderId);
+            chatMessage.setSender(senderId); // 使用验证后的 senderId
             chatMessage.setReceiver(msg.receiver);
             chatMessage.setContent(msg.payload);
             chatMessage.setDate(LocalDateTime.now());
@@ -114,7 +128,6 @@ public class ChatController {
                 logger.info("[websocket] 消息已发送给接收者：receiverId={}", msg.receiver);
             } else {
                 logger.info("[websocket] 接收者不在线：receiverId={}", msg.receiver);
-                // 可选：处理离线消息，但此处不实现
             }
         } else {
             logger.warn("[websocket] 不支持的操作类型：type={}", msg.type);

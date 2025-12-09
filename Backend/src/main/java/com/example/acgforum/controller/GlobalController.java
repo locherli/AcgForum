@@ -244,63 +244,6 @@ public class GlobalController {
         // Return message.
         return returnObj;
     }
-/*
-    @PostMapping("/put_post")
-    public Map<String, Object> putPost(@RequestBody Map<String, String> requestBody) {
-        try {
-
-            if(!StpUtil.isLogin()){
-                return Map.of("msg","unauthorized");
-            }
-
-            // 验证必需字段
-            Map<String, Object> validationError = validateRequiredFields(requestBody, "isRoot", "content", "forumId");
-            if (validationError != null) {
-                return validationError;
-            }
-
-            int userId = StpUtil.getLoginIdAsInt();
-
-            // 对于非根帖子，还需要验证 root 字段
-            boolean isRoot = requestBody.get("isRoot").equalsIgnoreCase("true");
-            if (!isRoot) {
-                Map<String, Object> rootValidationError = validateRequiredFields(requestBody, "root");
-                if (rootValidationError != null) {
-                    return rootValidationError;
-                }
-            } else {
-                Map<String, Object> rootPostValidationError = validateRequiredFields(requestBody, "title");
-                if (rootPostValidationError != null) {
-                    return rootPostValidationError;
-                }
-            }
-
-            Integer root = null; // Declare the variable here
-
-            if (!isRoot) *//*if this post was a comment.*//* {
-                //comments number + 1
-                root = Integer.parseInt(requestBody.get("root"));
-                Post p = postMapper.getById(root);
-                p.setCommentNum(p.getCommentNum() + 1);
-                postMapper.update(p);
-            }
-            Post p = new Post(null, userId, isRoot, root
-                    , requestBody.get("title"), LocalDateTime.now(), 0, 0
-                    , requestBody.get("content"), Integer.parseInt(requestBody.get("forumId")));
-
-            postMapper.insertPost(p);
-
-            return Map.of("success", true);
-
-        } catch (NumberFormatException | NullPointerException e) {
-            // Handle the case where parsing to integer fails or requestBody is null
-            System.out.println("Invalid user ID format or null request body: " + e.getMessage());
-            return Map.of("success", false, "message", e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An unexpected error occurred: " + e.getMessage());
-            return Map.of("success", false, "message", e.getMessage());
-        }
-    }*/
 
     @PostMapping("/put_post")
     public Map<String, Object> putPost(
@@ -817,15 +760,46 @@ public class GlobalController {
         int currentUser = StpUtil.getLoginIdAsInt();
 
         ArrayList<ChatMessage> msg = new ArrayList<>(chatMapper.findHistory(currentUser, userId));
-        chatMapper.markAsRead(currentUser,userId);
+        chatMapper.markAsRead(currentUser, userId);
 
         return msg;
     }
 
     @GetMapping("/chat/msg_num")
-    public Integer countMsgNum(){
+    public Integer countMsgNum() {
         int currentUser = StpUtil.getLoginIdAsInt();
         return chatMapper.countUnread(currentUser);
+    }
+
+    @GetMapping("/chat/recentContacts")
+    public ArrayList<ReturnContact> recentContacts() {
+        try {
+            int currentUserId = StpUtil.getLoginIdAsInt();
+            ArrayList<Integer> contactsIdList = new ArrayList<>(chatMapper.findRecentContactIds(currentUserId));
+            ArrayList<ReturnContact> list = new ArrayList<>();
+
+            contactsIdList.forEach(i -> {
+                ReturnContact newContact = new ReturnContact();
+                User user = userMapper.getUserById(i);
+
+                newContact.setId(user.getId());
+                newContact.setName(user.getUserName());
+                newContact.setAvatar(user.getAvatarUrl());
+                newContact.setMessageCount(chatMapper.countUnreadMessage(currentUserId, i));
+                newContact.setLatestMessage(chatMapper.latestMessageTime(currentUserId, i));
+
+                list.add(newContact);
+            });
+            return list;
+
+        } catch (NumberFormatException e) {
+            logger.info("user do not login");
+            return null;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+
     }
 
 }

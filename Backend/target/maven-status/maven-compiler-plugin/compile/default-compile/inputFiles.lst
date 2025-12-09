@@ -11,6 +11,7 @@ D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\ForumMa
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\PostMapper.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\mappers\UserMapper.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnComment.java
+D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnContact.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnForum.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnPost.java
 D:\Workspace\AcgForum\Backend\src\main\java\com\example\acgforum\ReturnFormat\ReturnSimplePost.java

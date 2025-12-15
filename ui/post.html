@@ -462,15 +462,21 @@
                 },
                 async putComment() {
                     try {
-                        const response = await fetch(`/api/put_comment?root=${this.postId}&content=${this.textarea}`, {
+                        const content = encodeURIComponent(this.textarea);
+                        const response = await fetch(`/api/put_comment?root=${this.postId}&content=${content}`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             }
                         });
                         const result = await response.json();
+
                         if (result.success === true) {
                             showToast('Put comment success');
+
+                            this.textarea = '';
+                            await this.fetchComments();
+
                         } else if (result.msg == 'unauthorized') {
                             showToast('Please login first');
                         } else {
